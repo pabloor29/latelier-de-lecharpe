@@ -34,11 +34,11 @@ function Footer() {
           <h4 className="font-spaceTransit text-5xl mb-3">ADRESSE</h4>
           <a
             className="flex flex-col items-center justify-center text-center hover:underline"
-            href="https://www.google.com/maps/place/22+Rue+Trivalle,+11000+Carcassonne/@43.2092525,2.3586791,17z/data=!3m1!4b1!4m6!3m5!1s0x12ae2c3fe47df2d1:0xecd2d651ec878ced!8m2!3d43.2092525!4d2.361254!16s%2Fg%2F11bw40xyml?entry=ttu"
+            href="https://www.google.fr/maps/place/8+Rue+de+l'%C3%89charpe,+31000+Toulouse/@43.6020582,1.4432728,676m/data=!3m2!1e3!4b1!4m6!3m5!1s0x12aebc9daaafffff:0x6b0c27a5efb0ecff!8m2!3d43.6020582!4d1.4458477!16s%2Fg%2F11l_4l0gq7?entry=ttu&g_ep=EgoyMDI1MTExNi4wIKXMDSoASAFQAw%3D%3D"
           >
-            22 rue Trivalle
+            8 rue de l'Écharpe
             <br />
-            11000, Carcassonne
+            31000, Toulouse
           </a>
         </div>
 
@@ -47,32 +47,32 @@ function Footer() {
           <ul className="flex flex-col items-center justify-center">
             <li className="flex gap-2 mb-3 hover:underline">
               <Mail />
-              <a href="mailto:floridablanca22@gmail.com">
-                floridablanca22@gmail.com
+              <a href="mailto:atelier1524@orange.com">
+                atelier1524@orange.com
               </a>
             </li>
             <li className="flex gap-2 mb-3 hover:underline">
               <Phone />
-              <a href="tel:+33430345855">04 30 34 58 55</a>
+              <a href="tel:+33534309335">+33 5 34 30 93 35</a>
             </li>
             <li className="flex gap-2 mb-3 hover:underline">
               <Instagram />
-              <a href="https://www.instagram.com/floridablanca_bar_a_poulpe/?hl=fr">@floridablanca_bar_a_poulpe</a>
+              <a href="https://www.instagram.com/latelierdelecharpe_/">@latelierdelecharpe_</a>
             </li>
             <li className="flex gap-2 mb-3 hover:underline"></li>
           </ul>
         </div>
 
         <div className="w-40 flex items-center justify-center">
-          <img src="/logo-blue.webp" alt="logo de floridablanca" />
+          <img src="#" alt="Logo" />
         </div>
       </div>
 
       <a
-        href="https://www.cntl.digital/"
+        href="https://portfolio-pablo-teal.vercel.app/"
         className="text-[#0A3C74] hover:underline py-2 text-xs w-full bg-[#e0ebff] flex justify-center items-center"
       >
-        © This is a CNTL Digital creation - 2023
+        © This is a PABLO ORTEGA creation - 2025
       </a>
     </footer>
   );

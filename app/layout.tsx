@@ -8,9 +8,9 @@ import { Analytics } from "@vercel/analytics/react"
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "FloridaBlanca - Bar à Poulpe",
-  description: "Le Floridablanca à Carcassonne vous invite à découvrir une large sélection de tapas savoureuses dans un cadre convivial. Situé au pied de la cité médiévale, notre restaurant propose une cuisine méditerranéenne créative, mettant en valeur des produits frais et locaux.",
-  icons: "/logo-blue.webp",
+  title: "L'atelier de l'écharpe",
+  description: "Ben & Gilles sont ravis de vous accueillir à l'Atelier de l'Echarpe, nouveau lieu de fiesta à Toulouse, 8 rue de l'écharpe 31000 Toulouse, tout près de la place Esquirol, de l'hotel d'Assezat et du Pont-Neuf.",
+  icons: "#",
 };
 
 export default function RootLayout({
@@ -19,20 +19,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <Head>
-        <title>FloridaBlanca - Bar à Poulpe</title>
+        <title>L'atelier de l'écharpe</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1"
         ></meta>
-        <meta name="keywords" content="Tapas, Bar à poulpe, restaurant, carcassonne" />
-        <meta name="description" content="Le Floridablanca à Carcassonne vous invite à découvrir une large sélection de tapas savoureuses dans un cadre convivial. Situé au pied de la cité médiévale, notre restaurant propose une cuisine méditerranéenne créative, mettant en valeur des produits frais et locaux." />
-        <meta property="og:title" content="FloridaBlanca - Bar à Poulpe" />
-        <meta property="og:image" content="/logo-blue.webp" />
+        <meta name="keywords" content="Bar, Bar à cocktails, Cocktails, Vin, Bar à vin, Restaurant Toulouse, Restaurant, Toulouse, Cocktails Toulouse, Bar à cocktails Toulouse, Bar à vin Toulouse" />
+        <meta name="description" content="Ben & Gilles sont ravis de vous accueillir à l'Atelier de l'Echarpe, nouveau lieu de fiesta à Toulouse, 8 rue de l'écharpe 31000 Toulouse, tout près de la place Esquirol, de l'hotel d'Assezat et du Pont-Neuf." />
+        <meta property="og:title" content="L'atelier de l'écharpe" />
+        <meta property="og:image" content="#" />
         <meta property="og:url" content="https://www.floridablanca.fr/" />
         <meta charSet="utf-8"></meta>
-        <link rel="icon" href="/logo-blue.webp"></link>
+        <link rel="icon" href="#"></link>
       </Head>
       <body className={inter.className}>
         {children}

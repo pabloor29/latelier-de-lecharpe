@@ -18,18 +18,18 @@ function ContactPage() {
 
       <div className="w-full flex flex-col lg:flex-row justify-between lg:space-x-8 space-y-8 lg:space-y-0">
         <div className="lg:h-[750px] h-[1100px] lg:w-1/2 lg:pl-16 space-y-8 flex flex-col items-center justify-center lg:py-12">
-          <h3 className="z-10 leading-none text-[#002E6D] font-spaceTransit text-8xl tracking-wide">
-            Floridablanca
+          <h3 className="z-10 leading-none text-[#002E6D] text-4xl tracking-wide">
+            L'aterlier de l'écharpe
           </h3>
 
           <div className="flex flex-col lg:flex-row items-center justify-between lg:space-x-16">
             <div className="flex flex-col justify-between items-center space-y-12">
               <div className="text-[#002E6D] flex flex-col space-y-3 items-center lg:items-start justify-center">
                 <h4 className="underline">
-                  22, rue Trivalle 11000 CARCASSONNE
+                  8 rue de l'Écharpe, 31000 Toulouse
                 </h4>
-                <a href="">Fixe : +33 4 30 34 58 55 </a>
-                <a href="">Mobile : +33 6 34 29 48 74</a>
+                <a href="tel:+33534309335">TEL : +33 5 34 30 93 35</a>
+                {/* <a href="">Mobile : +33 6 34 29 48 74</a> */}
               </div>
 
               <div className="text-[#002E6D] w-full flex flex-col space-y-3 items-center lg:items-start justify-center">
@@ -110,8 +110,23 @@ function ContactPage() {
           </div>
         </div>
 
-        <div className="lg:w-1/2 flex items-center justify-center lg:h-[750px] overflow-hidden">
-          <img src="/florida-map-3.png" alt="" />
+        <div className="lg:w-1/2 flex items-center justify-center lg:h-[750px] h-[500px] overflow-hidden">
+          <iframe
+              title="Google Map"
+              width="100%"
+              height="100%"
+              style={{ 
+                border: 10,
+                padding: 40,
+                borderRadius: 50
+               }}
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2941.883308141408!2d1.4432727762339608!3d43.60205817110451!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aebc9daaafffff%3A0x6b0c27a5efb0ecff!2s8%20Rue%20de%20l&#39;%C3%89charpe%2C%2031000%20Toulouse!5e1!3m2!1sfr!2sfr!4v1763412495463!5m2!1sfr!2sfr"
+              className="rounded-3xl"
+          >
+          </iframe>
         </div>
       </div>
 

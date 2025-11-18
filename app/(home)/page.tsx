@@ -9,7 +9,7 @@ export default function Home() {
     <main className="flex flex-col items-center">
       <Navbar />
       <HeroBanner />
-      <MainPage />
+      {/* <MainPage /> */}
       <Footer />
       <Analytics />
     </main>
