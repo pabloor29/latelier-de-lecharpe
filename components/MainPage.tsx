@@ -3,7 +3,7 @@ import IntroRestaurant from './IntroRestaurant'
 import SuggestionChef from './SuggestionChef'
 import IntroVins from './IntroVins'
 import CarouselRestaurant from './CarouselRestaurant'
-import PlatCursorEffect from './PlatCursorEffect'
+import GroupSection from './GroupSection'
 
 function MainPage() {
   return (
@@ -12,7 +12,7 @@ function MainPage() {
       {/* <SuggestionChef /> */}
       {/* <IntroVins /> */}
       {/* <CarouselRestaurant /> */}
-      {/* <PlatCursorEffect /> */}
+      <GroupSection />
     </div>
   )
 }
