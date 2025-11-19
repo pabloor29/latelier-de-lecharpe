@@ -1,3 +1,11 @@
-# https://www.robotstxt.org/robotstxt.html
+# Fichier robots.txt pour React
+
+# Autorise tous les moteurs de recherche à explorer toutes les pages
 User-agent: *
-Disallow:
+Disallow: /reservation-autoreply/
+
+# Autorise les moteurs de recherche à indexer la version canonique de la page
+Allow: /$
+
+# Sitemap : Indique à Google où trouver le fichier sitemap.xml
+Sitemap: https://www.floridablanca.fr/sitemap.xml

@@ -4,10 +4,16 @@
  
 
 @font-face {
-  font-family: 'SpaceTransit';
-  src: url('../public/font/SpaceTransit.woff2') format('woff2'),
-       url('../public/font/SpaceTransit.woff') format('woff'),
-       url('../public/font/SpaceTransit.ttf') format('truetype');
+  font-family: 'SpecialElite-Regular';
+  src: url('../public/font/SpecialElite-Regular.ttf') format('truetype');
+       font-weight: 100 900;
+       font-display: swap;
+       font-style: normal;
+}
+
+@font-face {
+  font-family: 'Eina01';
+  src: url('../public/font/Eina01-Bold.ttf') format('truetype');
        font-weight: 100 900;
        font-display: swap;
        font-style: normal;

@@ -25,7 +25,8 @@ module.exports = {
       "9xl": "8rem",
     },
     fontFamily: {
-      spaceTransit: ["SpaceTransit", "ui-serif"],
+      specialElite: ["SpecialElite-Regular", "ui-serif"],
+      eina: ["Eina01", "ui-serif"],
     },
     container: {
       center: true,
@@ -41,9 +42,12 @@ module.exports = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
-        cream: '#fae9d7',
-        pinkCarbo: '#F7DAD9',
-        whiteSmokedBG: '#FEF8ED',
+        cream: '#FBE9D5',
+        blueLight: '#271C82',
+        blueDark: '#201C5C',
+        pinkLight: '#C71D7A',
+        redWine: '#A40001',
+        mustard: '#C89D4C',
       },
       borderRadius: {
         lg: "var(--radius)",

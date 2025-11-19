@@ -9,10 +9,10 @@ function MainPage() {
   return (
     <div>
       <IntroRestaurant />
-      <SuggestionChef />
-      <IntroVins />
-      <CarouselRestaurant />
-      <PlatCursorEffect />
+      {/* <SuggestionChef /> */}
+      {/* <IntroVins /> */}
+      {/* <CarouselRestaurant /> */}
+      {/* <PlatCursorEffect /> */}
     </div>
   )
 }

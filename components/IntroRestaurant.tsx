@@ -45,19 +45,19 @@ const imagesVariants: Variants = {
 
 function IntroRestaurant() {
   return (
-    <div className="flex justify-center items-center py-24">
-      <div className="lg:w-3/5 flex flex-col lg:flex-row justify-center items-center lg:space-x-20 space-y-10">
+    <div className="flex justify-center items-center py-14">
+      <div className="w-screen lg:w-3/5 flex flex-col lg:flex-row justify-center items-center lg:space-x-20 space-y-10">
         <motion.div
           initial="hiddenRight"
           whileInView="visibleRight"
           viewport={{ once: true, margin: "-20%" }}
           variants={imagesVariants}
-          className="lg:w-1/2 w-5/6"
+          className="lg:w-1/2 w-3/4"
         >
           <img
-            src="/octopus-drawing-blue.webp"
+            src="/img/deco/crocodile-rbg.png"
             alt=""
-            className="-scale-x-100"
+            className=""
           />
         </motion.div>
 
@@ -66,22 +66,17 @@ function IntroRestaurant() {
           whileInView="visibleLeft"
           viewport={{ once: true, margin: "-20%" }}
           variants={imagesVariants}
-          className="lg:w-1/2 w-5/6 flex flex-col space-y-8"
+          className="lg:w-1/2 w-5/6 flex flex-col justify-center items-center space-y-8"
         >
-          <h3 className="text-[#002E6D] text-5xl font-medium font-spaceTransit leading-none">
-            Restaurant de Tapas Specialites Espagnoles
+          <h3 className="text-blueDark font-specialElite text-2xl text-center">
+            Un lieu, trois ambiances...
           </h3>
-          <article className="text-[#274b7e] text-justify lg:text-left">
-            Petit restaurant espagnol au pied de la cité nous proposons une
-            carte variée de tapas et de plats avec une belle sélection de vins
-            locaux.
+          <h1 className="text-blueDark font-specialElite text-2xl">
+            brunch | dîner | night
+          </h1>
+          <article className="text-blueDark text-justify font-specialElite">
+            Ben & Gilles sont ravis de vous accueillir à l'Atelier de l'Echarpe, nouveau lieu de fiesta à Toulouse, 8 rue de l'écharpe 31000 Toulouse, tout près de la place Esquirol, de l'hotel d'Assezat et du Pont-Neuf.
           </article>
-          <Link
-            href="/apropos"
-            className="bg-[#002E6D] hover:bg-transparent border hover:border-[#002E6D] text-white font-medium hover:text-[#002E6D] w-fit duration-200 px-4 py-3"
-          >
-            À propos du restaurant
-          </Link>
         </motion.div>
       </div>
     </div>

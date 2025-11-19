@@ -50,14 +50,21 @@ const textVariantsRight: Variants = {
 
 function HeroBanner() {
   return (
-    <div className="h-screen w-full flex justify-center items-center bg-cream">
+    <div className="h-screen w-screen flex justify-center items-center bg-cream">
+      <div className="flex w-screen absolute">
+        <img
+          src="/img/deco/img-rino-red-1-rbg.png"
+          alt=""
+          className="object-cover opacity-70"
+        />
+      </div>
       <div className="relative z-20 flex flex-col leading-none">
         <motion.h1
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={textVariantsLeft}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-black tracking-wider"
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-black tracking-wider font-eina"
         >
           L'ATELIER
         </motion.h1>
@@ -68,7 +75,7 @@ function HeroBanner() {
           variants={textVariantsTop}
           className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-black tracking-wide"
         >
-          <div className="absolute -rotate-90 translate-x-[142px] -translate-y-[40px] sm:translate-x-[178px] sm:-translate-y-[50px] md:translate-x-[212px] md:-translate-y-[60px] lg:translate-x-[284px] lg:-translate-y-[80px]">
+          <div className="absolute -rotate-90 translate-x-[138px] -translate-y-[42px] sm:translate-x-[172px] sm:-translate-y-[52px] md:translate-x-[206px] md:-translate-y-[63px] lg:translate-x-[275px] lg:-translate-y-[84px] font-eina">
             DE
           </div>
         </motion.h2>
@@ -77,7 +84,7 @@ function HeroBanner() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={textVariantsRight}
-          className="text-black text-xl sm:text-2xl md:text-3xl lg:text-4xl text-end"
+          className="text-black text-xl sm:text-2xl md:text-3xl lg:text-4xl text-end font-eina"
         >
           L'ÉCHARPE
         </motion.h3>
