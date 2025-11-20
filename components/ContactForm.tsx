@@ -18,7 +18,15 @@ const ReservationForm = () => {
       title: "Demande de reservation",
       fullNameLabel: "Nom complet",
       emailLabel: "Email",
+      clasicTableReservation: "Réservation classique pour une table",
+      groupFormulaReservation: "Réservation pour un groupe avec formule",
       numberOfGuestsLabel: "Nombre de personnes",
+      formulaSelectorLabel:"Le détails des fomrules est disponible sur notre page d'accueil. Pour chaque formule, indiquez le nombre souhaité",
+      formula1Label: "Formule à 32€",
+      formula2Label: "Formule à 35€",
+      formula3Label: "Formule à 38€",
+      formula4Label: "Formule à 49€",
+      formula5Label: "Formule à 55€",
       eventDateLabel: "Date",
       infoDateLabel: "(Fermé lundi et dimanche)",
       infoDateLabelSummer: "(Fermé dimanche et lundi midi)",
@@ -36,6 +44,8 @@ const ReservationForm = () => {
       title: "Reservation request",
       fullNameLabel: "Full name",
       emailLabel: "Email",
+      clasicTableReservation: "Réservation classique pour une table",
+      groupFormulaReservation: "Réservation pour un groupe avec formule",
       numberOfGuestsLabel: "Number of people",
       eventDateLabel: "Date",
       infoDateLabel: "(Closed on Monday and Sunday)",
@@ -54,6 +64,8 @@ const ReservationForm = () => {
       title: "Solicitud de reserva",
       fullNameLabel: "Nombre completo",
       emailLabel: "Correo electronico",
+      clasicTableReservation: "Réservation classique pour une table",
+      groupFormulaReservation: "Réservation pour un groupe avec formule",
       numberOfGuestsLabel: "Numero de personas",
       eventDateLabel: "Fecha",
       infoDateLabel: "(Cerrado los lunes y domingos)",
@@ -72,6 +84,8 @@ const ReservationForm = () => {
       title: "Richiesta di prenotazione",
       fullNameLabel: "Nome completo",
       emailLabel: "Email",
+      clasicTableReservation: "Réservation classique pour une table",
+      groupFormulaReservation: "Réservation pour un groupe avec formule",
       numberOfGuestsLabel: "Numero di persone",
       eventDateLabel: "Data",
       infoDateLabel: "(Chiuso il lunedì e la domenica)",
@@ -91,7 +105,15 @@ const ReservationForm = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
+    tel: "",
+    reservationTypeTable: Boolean(true),
+    reservationTypeGroup: Boolean(false),
     numberOfGuests: "",
+    formule1:"",
+    formule2:"",
+    formule3:"",
+    formule4:"",
+    formule5:"",
     eventDate: new Date(),
     eventTime: "",
     specialRequests: "",
@@ -112,30 +134,6 @@ const ReservationForm = () => {
   };
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-
-    const {
-      fullName,
-      email,
-      numberOfGuests,
-      eventDate,
-      eventTime,
-      specialRequests,
-      reservationType,
-    } = formData;
-
-    const mailTo = "floridablanca22@gmail.com";
-    const subject = `Table Reservation - Le ${eventDate} à ${eventTime}`;
-    const body = `Full Name: ${fullName}\nEmail: ${email}\nNumber of Guests: ${numberOfGuests}\nDate and Time: ${eventDate}, ${eventTime}\nSpecial Requests: ${specialRequests}\nReservation Type: ${reservationType}`;
-
-    window.location.href = `mailto:${mailTo}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
-
-    setSucceeded(true);
-  };
 
   const [eventDateTXT, setEventDateTXT] = useState("");
 
@@ -214,7 +212,7 @@ const ReservationForm = () => {
                               ];
 
     const optionsTimeHalfDayEvening = ["18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"
-                               ];
+                                      ];
   
     const handleSelect = (value: string) => {
       setSelectedValue(value);
@@ -237,7 +235,7 @@ const ReservationForm = () => {
           </p>
         </div>
       ) : (
-        <div className="relative flex flex-col lg:flex-row justify-center items-center lg:space-x-20 space-y-8 py-16">
+        <div className="relative flex flex-col lg:flex-row justify-center items-center lg:space-x-20 space-y-8 py-16 bg-cream">
           <form
             ref={formRef}
             onSubmit={sendEmail}
@@ -245,18 +243,18 @@ const ReservationForm = () => {
             className="space-y-8 lg:w-1/3 w-5/6 z-20"
           >
             <input type="hidden" name="eventDateTXT" value={eventDateTXT} />
-            <input type="hidden" name="company" value="FLORIDABLANCA" />
-            <input type="hidden" name="emailCompany" value="floridablanca22@gmail.com" />
+            <input type="hidden" name="company" value="L'Aterlier de l'Écharpe" />
+            <input type="hidden" name="emailCompany" value="atelier1524@orange.com" />
             <input type="hidden" name="reservationType" value="EN ATTENTE DE CONFIRMATION" />
             <input type="hidden" name="reservationComment" value="Nous avons bien pris en compte votre demande et elle sera traitée dans les plus brefs délais. Veuillez noter que votre réservation ne sera confirmée qu’une fois que vous aurez reçu un mail de confirmation de notre part. Nous vous remercions pour votre patience et sommes impatients de vous accueillir !" />
-            <div className="flex items-center justify-between lg:flex-row flex-col-reverse">
-              <h3 className="text-[#002E6D] text-7xl font-medium font-spaceTransit leading-none">
+            <div className="flex items-center justify-between flex-row pb-8">
+              <h3 className="text-blueDark text-xl sm:text-3xl md:text-4xl lg:text-2xl font-medium font-specialElite leading-none">
                 {translation.title}
               </h3>
               <select
                 value={selectedLanguage}
                 onChange={(e) => setSelectedLanguage(e.target.value)}
-                className="rounded-md border border-[#597ba8] text-xl px-2 py-1 ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-md border border-blueDark text-xl px-2 py-1 ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <option value="fr">🇫🇷</option>
                 <option value="en">🇬🇧</option>
@@ -267,7 +265,7 @@ const ReservationForm = () => {
             <div>
               <label
                 htmlFor="fullName"
-                className="block text-lg font-medium text-[#002E6D] font-spaceTransit text-4xl tracking-wide"
+                className="block text-blueDark font-specialElite text-xl tracking-wide"
               >
                 {translation.fullNameLabel}
               </label>
@@ -285,7 +283,7 @@ const ReservationForm = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block text-lg font-medium text-[#002E6D] font-spaceTransit text-4xl tracking-wide"
+                className="block text-blueDark font-specialElite text-xl tracking-wide"
               >
                 Email
               </label>
@@ -300,72 +298,229 @@ const ReservationForm = () => {
               />
             </div>
 
-            <div className="flex flex-col lg:flex-row justify-between items-center md:items-end lg:space-x-10 space-y-8 lg:space-y-0">
-              <div className="lg:w-1/2 w-full">
-                <label
-                  htmlFor="numberOfGuests"
-                  className="block text-lg font-medium text-[#002E6D] font-spaceTransit text-4xl tracking-wide"
-                >
-                  {translation.numberOfGuestsLabel}
-                </label>
-                <input
-                  type="number"
-                  id="numberOfGuests"
-                  name="numberOfGuests"
-                  value={formData.numberOfGuests}
-                  onChange={handleChange}
-                  min={1}
-                  className="mt-1 block w-full px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
-                  required
-                />
+            <div>
+              <label
+                htmlFor="tel"
+                className="block text-blueDark font-specialElite text-xl tracking-wide"
+              >
+                TEL
+              </label>
+              <input
+                type="tel"
+                id="tel"
+                name="tel"
+                value={formData.tel}
+                onChange={handleChange}
+                className="mt-1 block w-full px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
+                required
+              />
+            </div>
+
+            <div className="w-full flex flex-col justify-between items-center md:items-end space-y-8">
+              <div className="flex flex-col w-full">
+                <div className="flex flex-row justify-between">
+                  <div className="font-specialElite text-blueDark text-lg">
+                    {translation.clasicTableReservation}
+                  </div>
+                  <input
+                    type="checkbox"
+                    className="scale-150"
+                    checked={formData.reservationTypeTable}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        reservationTypeTable: e.target.checked,
+                        reservationTypeGroup: false,
+                      })
+                    }
+                  />
+                </div>
+                <div className="flex flex-row justify-between">
+                  <div className="font-specialElite text-blueDark text-lg">
+                    {translation.groupFormulaReservation}
+                  </div>
+                  <input
+                    type="checkbox"
+                    className="scale-150"
+                    checked={formData.reservationTypeGroup}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        reservationTypeGroup: e.target.checked,
+                        reservationTypeTable: false,
+                      })
+                    }
+                  />
+                </div>
               </div>
 
-              <div className="lg:w-1/2 w-full">
-                <label
-                  htmlFor="eventDate"
-                  className="block text-lg font-medium text-[#002E6D] font-spaceTransit text-4xl tracking-wide"
-                >
-                  {translation.eventDateLabel}
-                </label>
-                <input 
-                  type="date" 
-                  id="datePicker" 
-                  name="eventDate" 
-                  required
-                  className="mt-1 block w-full px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
-                  onChange={(e) => {
-                    const newDate = new Date(e.target.value);
-                    setSelectedDate(newDate);       // ✅ met à jour la date sélectionnée
-                    setSelectedValue("");           // ✅ réinitialise l’horaire
-                    setEventDateTXT(() => {
-                      const day = newDate.getDate();
-                      const month = newDate.getMonth() + 1;
-                      const year = newDate.getFullYear();
-                      const twoDigits = (n: number) => n.toString().padStart(2, "0");
-                      return `${twoDigits(day)}-${twoDigits(month)}-${year}`;
-                    });
-                  }}
-                />
+              {formData.reservationTypeTable && (
+                <div className="lg:w-1/2 w-full">
+                  <label
+                    htmlFor="numberOfGuests"
+                    className="block text-blueDark font-specialElite text-xl tracking-wide"
+                  >
+                    {translation.numberOfGuestsLabel}
+                  </label>
+                  <input
+                    type="number"
+                    id="numberOfGuests"
+                    name="numberOfGuests"
+                    value={formData.numberOfGuests}
+                    onChange={handleChange}
+                    min={1}
+                    className="mt-1 block w-full px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
+                    required
+                  />
+                </div>
+              )}
+
+              {formData.reservationTypeGroup && (
+                <div className="w-full">
+                  <p className="text-lg font-specialElite text-blueDark pb-4">
+                    {translation.formulaSelectorLabel}
+                  </p>
+                  <div className="flex flex-rox justify-between items-end mr-28">
+                    <label
+                      htmlFor="formule1"
+                      className="block text-blueDark font-specialElite text-xl tracking-wide whitespace-nowrap"
+                    >
+                      {translation.formula1Label}
+                    </label>
+                    <input
+                      type="number"
+                      id="formule1"
+                      name="formule1"
+                      value={formData.formule1}
+                      onChange={handleChange}
+                      min={0}
+                      className="mt-1 block w-1/3 px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-rox justify-between items-end mr-28">
+                    <label
+                      htmlFor="formule2"
+                      className="block text-blueDark font-specialElite text-xl tracking-wide whitespace-nowrap"
+                    >
+                      {translation.formula2Label}
+                    </label>
+                    <input
+                      type="number"
+                      id="formule2"
+                      name="formule2"
+                      value={formData.formule2}
+                      onChange={handleChange}
+                      min={0}
+                      className="mt-1 block w-1/3 px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-rox justify-between items-end mr-28">
+                    <label
+                      htmlFor="formule3"
+                      className="block text-blueDark font-specialElite text-xl tracking-wide whitespace-nowrap"
+                    >
+                      {translation.formula3Label}
+                    </label>
+                    <input
+                      type="number"
+                      id="formule3"
+                      name="formule3"
+                      value={formData.formule3}
+                      onChange={handleChange}
+                      min={0}
+                      className="mt-1 block w-1/3 px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-rox justify-between items-end mr-28">
+                    <label
+                      htmlFor="formule4"
+                      className="block text-blueDark font-specialElite text-xl tracking-wide whitespace-nowrap"
+                    >
+                      {translation.formula4Label}
+                    </label>
+                    <input
+                      type="number"
+                      id="formule4"
+                      name="formule4"
+                      value={formData.formule4}
+                      onChange={handleChange}
+                      min={0}
+                      className="mt-1 block w-1/3 px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-rox justify-between items-end mr-28">
+                    <label
+                      htmlFor="formule5"
+                      className="block text-blueDark font-specialElite text-xl tracking-wide whitespace-nowrap"
+                    >
+                      {translation.formula5Label}
+                    </label>
+                    <input
+                      type="number"
+                      id="formule5"
+                      name="formule5"
+                      value={formData.formule5}
+                      onChange={handleChange}
+                      min={0}
+                      className="mt-1 block w-1/3 px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
+                      required
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div className="w-full">
+                <div className="w-full flex flex-row items-end justify-between">
+                  <label
+                    htmlFor="eventDate"
+                    className="block text-blueDark font-specialElite text-xl tracking-wide"
+                  >
+                    {translation.eventDateLabel}
+                  </label>
+                  <input 
+                    type="date" 
+                    id="datePicker" 
+                    name="eventDate" 
+                    required
+                    className="mt-1 block w-2/3 px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
+                    onChange={(e) => {
+                      const newDate = new Date(e.target.value);
+                      setSelectedDate(newDate);       // ✅ met à jour la date sélectionnée
+                      setSelectedValue("");           // ✅ réinitialise l’horaire
+                      setEventDateTXT(() => {
+                        const day = newDate.getDate();
+                        const month = newDate.getMonth() + 1;
+                        const year = newDate.getFullYear();
+                        const twoDigits = (n: number) => n.toString().padStart(2, "0");
+                        return `${twoDigits(day)}-${twoDigits(month)}-${year}`;
+                      });
+                    }}
+                  />
+                </div>
+
                 { selectedDate.getMonth() + 1 === 7 || selectedDate.getMonth() + 1 === 8 ? (
-                  <p className="absolute w-content text-sm pt-1">
+                  <p className="w-content text-sm pt-1">
                     {translation.infoDateLabelSummer}
                   </p>
                 ) : selectedDate.getMonth() + 1 === 11 || selectedDate.getMonth() + 1 === 12 || selectedDate.getMonth() + 1 === 1 || selectedDate.getMonth() + 1 === 2 ? (
-                  <p className="absolute w-content text-sm pt-1">
+                  <p className="w-content text-sm pt-1">
                     {translation.infoDateLabelHollidays}
                   </p>
                 ):(
-                  <p className="absolute w-content text-sm pt-1">
+                  <p className="w-content text-sm pt-1">
                     {translation.infoDateLabel}
                   </p>
-                )
-                }
+                )}
               </div>
 
-              <div className="relative lg:w-1/2 w-full">
+              <div className="w-full flex flex-row items-end justify-between">
                 <label
                   htmlFor="eventTime"
-                  className="block text-lg font-medium text-[#002E6D] font-spaceTransit text-4xl tracking-wide"
+                  className="block text-blueDark font-specialElite text-xl tracking-wide"
                 >
                   {translation.eventTimeLabel}
                 </label>
@@ -375,7 +530,7 @@ const ReservationForm = () => {
                   value={selectedValue}
                   onClick={toggleDropdown}
                   onChange={(e) => setSelectedValue(e.target.value)}
-                  className="mt-1 block w-full px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
+                  className="mt-1 block w-2/3 px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
                   placeholder="Choisir une option"
                 />
                 
@@ -383,7 +538,7 @@ const ReservationForm = () => {
                 (
                   selectedDate.getDay() === 1 ? (
                     <ul
-                      className="absolute w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10"
+                      className="absolute w-1/3 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10"
                       style={{ maxHeight: "200px", overflowY: "auto" }}
                     >
                       {optionsTimeHalfDayEvening.map((option, index) => (
@@ -398,7 +553,7 @@ const ReservationForm = () => {
                     </ul>
                   ):(
                     <ul
-                      className="absolute w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10"
+                      className="absolute w-1/3 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10"
                       style={{ maxHeight: "200px", overflowY: "auto" }}
                     >
                       {optionsTimeAllDay.map((option, index) => (
@@ -419,7 +574,7 @@ const ReservationForm = () => {
             <div>
               <label
                 htmlFor="specialRequests"
-                className="block text-lg font-medium text-[#002E6D] font-spaceTransit text-4xl tracking-wide"
+                className="block text-blueDark font-specialElite text-xl tracking-wide"
               >
                 {translation.specialRequestsLabel}
               </label>
@@ -443,9 +598,9 @@ const ReservationForm = () => {
 
           <div className="lg:w-1/3 w-5/6 z-30">
             <img
-              src="/IMG_0228.webp"
+              src="#"
               alt=""
-              className="shadow-[25px_15px_0_0_#002E6D] z-30"
+              className="z-30"
             />
           </div>
 

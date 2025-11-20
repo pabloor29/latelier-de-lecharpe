@@ -19,8 +19,8 @@ const textVariants: Variants = {
 
 function CustomHeroBanner(props: any) {
   return (
-    <div className="h-96 relative">
-      <div className="w-full h-full bg-black/50 z-40 absolute"></div>
+    <div className="h-96 relative bg-redWine">
+      <div className="w-full h-full z-40 absolute"></div>
       <img
         src={props.img}
         alt=""
@@ -33,8 +33,7 @@ function CustomHeroBanner(props: any) {
           whileInView="visible"
           viewport={{ once: true }}
           variants={textVariants}
-          className="text-bigSM lg:text-bigLG text-white font-spaceTransit
-            tracking-wide z-40 drop-shadow-[5px_5px_0_#00A6E6]"
+          className="text-mustard font-specialElite tracking-wide z-40 text-5xl"
         >
           {props.title}
         </motion.h1>
