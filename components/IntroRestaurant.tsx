@@ -55,7 +55,7 @@ function IntroRestaurant() {
           className="lg:w-1/2 w-3/4"
         >
           <img
-            src="/img/deco/crocodile-rbg.png"
+            src="/img/deco/9.png"
             alt=""
             className=""
           />

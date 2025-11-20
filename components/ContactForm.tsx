@@ -21,7 +21,7 @@ const ReservationForm = () => {
       clasicTableReservation: "Réservation classique pour une table",
       groupFormulaReservation: "Réservation pour un groupe avec formule",
       numberOfGuestsLabel: "Nombre de personnes",
-      formulaSelectorLabel:"Le détails des fomrules est disponible sur notre page d'accueil. Pour chaque formule, indiquez le nombre souhaité",
+      formulaSelectorLabel:"Le détails des fomrules est disponible sur notre page d'accueil. Pour chaque formule, indiquez la quantité souhaitée.",
       formula1Label: "Formule à 32€",
       formula2Label: "Formule à 35€",
       formula3Label: "Formule à 38€",
@@ -47,6 +47,12 @@ const ReservationForm = () => {
       clasicTableReservation: "Réservation classique pour une table",
       groupFormulaReservation: "Réservation pour un groupe avec formule",
       numberOfGuestsLabel: "Number of people",
+      formulaSelectorLabel:"Le détails des fomrules est disponible sur notre page d'accueil. Pour chaque formule, indiquez le nombre souhaité",
+      formula1Label: "Formule à 32€",
+      formula2Label: "Formule à 35€",
+      formula3Label: "Formule à 38€",
+      formula4Label: "Formule à 49€",
+      formula5Label: "Formule à 55€",
       eventDateLabel: "Date",
       infoDateLabel: "(Closed on Monday and Sunday)",
       infoDateLabelSummer: "(Closed on Sunday and Monday lunchtime)",
@@ -67,6 +73,12 @@ const ReservationForm = () => {
       clasicTableReservation: "Réservation classique pour une table",
       groupFormulaReservation: "Réservation pour un groupe avec formule",
       numberOfGuestsLabel: "Numero de personas",
+      formulaSelectorLabel:"Le détails des fomrules est disponible sur notre page d'accueil. Pour chaque formule, indiquez le nombre souhaité",
+      formula1Label: "Formule à 32€",
+      formula2Label: "Formule à 35€",
+      formula3Label: "Formule à 38€",
+      formula4Label: "Formule à 49€",
+      formula5Label: "Formule à 55€",
       eventDateLabel: "Fecha",
       infoDateLabel: "(Cerrado los lunes y domingos)",
       infoDateLabelSummer: "(Cerrado el domingo y el lunes al mediodía)",
@@ -87,6 +99,12 @@ const ReservationForm = () => {
       clasicTableReservation: "Réservation classique pour une table",
       groupFormulaReservation: "Réservation pour un groupe avec formule",
       numberOfGuestsLabel: "Numero di persone",
+      formulaSelectorLabel:"Le détails des fomrules est disponible sur notre page d'accueil. Pour chaque formule, indiquez le nombre souhaité",
+      formula1Label: "Formule à 32€",
+      formula2Label: "Formule à 35€",
+      formula3Label: "Formule à 38€",
+      formula4Label: "Formule à 49€",
+      formula5Label: "Formule à 55€",
       eventDateLabel: "Data",
       infoDateLabel: "(Chiuso il lunedì e la domenica)",
       infoDateLabelSummer: "(Chiuso la domenica e il lunedì a pranzo)",
@@ -108,6 +126,7 @@ const ReservationForm = () => {
     tel: "",
     reservationTypeTable: Boolean(true),
     reservationTypeGroup: Boolean(false),
+    resarvationType: "TABLE",
     numberOfGuests: "",
     formule1:"",
     formule2:"",
@@ -117,7 +136,7 @@ const ReservationForm = () => {
     eventDate: new Date(),
     eventTime: "",
     specialRequests: "",
-    reservationType: "repas",
+    reservationState: "",
   });
 
   const [succeeded, setSucceeded] = useState(false);
@@ -182,6 +201,7 @@ const ReservationForm = () => {
   const formRef = useRef<HTMLFormElement>(null);
 
   const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
+
     e.preventDefault();
 
     if (!formRef.current) {
@@ -244,8 +264,8 @@ const ReservationForm = () => {
           >
             <input type="hidden" name="eventDateTXT" value={eventDateTXT} />
             <input type="hidden" name="company" value="L'Aterlier de l'Écharpe" />
-            <input type="hidden" name="emailCompany" value="atelier1524@orange.com" />
-            <input type="hidden" name="reservationType" value="EN ATTENTE DE CONFIRMATION" />
+            <input type="hidden" name="emailCompany" value="pab.ortg@gmail.com" />
+            <input type="hidden" name="reservationState" value="EN ATTENTE DE CONFIRMATION" />
             <input type="hidden" name="reservationComment" value="Nous avons bien pris en compte votre demande et elle sera traitée dans les plus brefs délais. Veuillez noter que votre réservation ne sera confirmée qu’une fois que vous aurez reçu un mail de confirmation de notre part. Nous vous remercions pour votre patience et sommes impatients de vous accueillir !" />
             <div className="flex items-center justify-between flex-row pb-8">
               <h3 className="text-blueDark text-xl sm:text-3xl md:text-4xl lg:text-2xl font-medium font-specialElite leading-none">
@@ -331,6 +351,7 @@ const ReservationForm = () => {
                         ...formData,
                         reservationTypeTable: e.target.checked,
                         reservationTypeGroup: false,
+                        resarvationType: "TABLE",
                       })
                     }
                   />
@@ -348,6 +369,7 @@ const ReservationForm = () => {
                         ...formData,
                         reservationTypeGroup: e.target.checked,
                         reservationTypeTable: false,
+                        resarvationType: "GROUP",
                       })
                     }
                   />
@@ -355,7 +377,7 @@ const ReservationForm = () => {
               </div>
 
               {formData.reservationTypeTable && (
-                <div className="lg:w-1/2 w-full">
+                <div className="w-full">
                   <label
                     htmlFor="numberOfGuests"
                     className="block text-blueDark font-specialElite text-xl tracking-wide"
@@ -470,6 +492,17 @@ const ReservationForm = () => {
                       required
                     />
                   </div>
+
+                  <input
+                    type="number"
+                    id="numberOfGuests"
+                    name="numberOfGuests"
+                    value={Number(formData.formule1) + Number(formData.formule2) + Number(formData.formule3) + Number(formData.formule4) + Number(formData.formule5)}
+                    onChange={handleChange}
+                    min={1}
+                    className="hidden"
+                    required
+                  />
                 </div>
               )}
 
@@ -590,7 +623,7 @@ const ReservationForm = () => {
 
             <button
               type="submit"
-              className="w-full bg-[#002E6D] rounded-sm py-3 text-lg font-semibold text-white hover:bg-[#295DA6] duration-300 cursor-pointer"
+              className="w-full bg-blueDark rounded-sm py-3 text-lg font-semibold text-mustard hover:bg-mustard hover:text-blueDark duration-300 cursor-pointer font-specialElite"
             >
               {translation.submitButton}
             </button>
@@ -598,10 +631,17 @@ const ReservationForm = () => {
 
           <div className="lg:w-1/3 w-5/6 z-30">
             <img
-              src="#"
+              src="/img/info/resume-page-cream.jpg"
               alt=""
-              className="z-30"
+              className="z-30 "
             />
+            <div className="">
+              <img
+                src="/img/deco/12.png"
+                alt=""
+                className="z-30 "
+              />
+            </div>
           </div>
 
           <img
