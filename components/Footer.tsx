@@ -1,22 +1,70 @@
+'use client'
+
+import { supabase } from "@/lib/supabseClient";
+import { useEffect, useState } from "react";
 import { Instagram, Mail, Phone } from "lucide-react";
 import React from "react";
 
 function Footer() {
+
+  const [hours, setHours] = useState<any[] | null>(null);
+
+  useEffect(() => {
+    async function fetchHours() {
+      const { data, error } = await supabase
+        .from("opening_hours")
+        .select("hours")
+        .eq("id", 1)
+        .single();
+
+      if (!error && data?.hours) {
+        setHours(data.hours);
+      }
+    }
+
+    fetchHours();
+  }, []);
+
   return (
     <footer className="w-full bg-blueLight flex flex-col justify-center items-center">
       <div className="flex flex-col lg:flex-row w-5/6 lg:justify-between justify-center items-center p-4 space-y-12 lg:space-y-0">
         <div className="lg:w-1/3 w-full text-redWine flex flex-col items-center justify-center">
           <h4 className="font-specialElite text-4xl mb-3">HORAIRES</h4>
-          <ul className="flex items-center justify-between space-x-10">
-            <div className="flex flex-col items-center justify-center text-center">
-              <li className="">
-                Du mardi au samedi dès 17h
-              </li>
-              <li>
-                Le dimanche de 12h à 14h30
-              </li>
-            </div>
-          </ul>
+
+          {!hours ? (
+            <p>Chargement...</p>
+          ) : (
+            <ul className="flex flex-col items-center justify-center space-y-2 text-center">
+              {hours.map((h: any) => {
+                const closedAllDay = h.closedDay;
+                const closedLunch = h.closedLunch;
+                const closedDiner = h.closedDiner;
+
+                return (
+                  <li key={h.day} className="font-semibold">
+                    <strong>{h.day} :</strong>{" "}
+                    {closedAllDay ? (
+                      <span>fermé</span>
+                    ) : (
+                      <span>
+                        {/* Midi */}
+                        {closedLunch
+                          ? "fermé le midi"
+                          : `${h.midi.debut || "—"} - ${h.midi.fin || "—"}`}
+
+                        {" | "}
+
+                        {/* Soir */}
+                        {closedDiner
+                          ? "fermé le soir"
+                          : `${h.soir.debut || "—"} - ${h.soir.fin || "—"}`}
+                      </span>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </div>
 
         <div className="lg:w-1/3 w-full text-redWine flex flex-col items-center justify-center">

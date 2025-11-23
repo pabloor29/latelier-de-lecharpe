@@ -56,7 +56,7 @@ export default async function AdminPage() {
                 <HomePage email={profile.email} />
             </div>
 
-            <section className='flex flex-col gap-20 w-2/3'>
+            <section className='flex flex-col gap-20 w-2/3 mb-10'>
                 <MenuChange />
                 <ScheduleChange />
                 <HolidaysChange />

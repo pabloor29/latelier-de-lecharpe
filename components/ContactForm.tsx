@@ -1,4 +1,6 @@
 "use client";
+
+import { supabase } from "@/lib/supabseClient";
 import { BadgeCheck } from "lucide-react";
 import React, { useState , useEffect , useRef } from "react";
 import CustomTimePicker from "./CustomTimePicker";
@@ -7,7 +9,6 @@ import DatePicker from "react-datepicker";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import { fr } from "date-fns/locale";
 import emailjs from "@emailjs/browser";
-
 
 registerLocale("fr", fr);
 setDefaultLocale("fr");
@@ -152,51 +153,7 @@ const ReservationForm = () => {
     console.log(formData.eventDate, formData.eventTime);
   };
 
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-
   const [eventDateTXT, setEventDateTXT] = useState("");
-
-  useEffect(() => {
-    const dateInput = document.getElementById("datePicker");
-
-    const handleDateChange = (e: any) => {
-      const date = new Date(e.target.value);
-      setSelectedDate(date);
-      const day = date.getDay();
-      const numDay = date.getDate();
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
-
-      const twoDigits = (num: number) => num.toString().padStart(2, "0");
-
-      setEventDateTXT(`${twoDigits(numDay)}-${twoDigits(month)}-${year}`);
-
-      if ((day == 0 && month == 7) || (day == 0 && month == 8))
-      {
-        e.target.value = "";
-      }
-      else if ((day === 0 || day === 1) && (month != 7) && (month != 8))
-      {
-        e.target.value = "";
-      }
-      else if (month == 11 || month == 12 || month == 1 || month == 2)
-      {
-        e.target.value = "";
-      }
-    };
-
-    if (dateInput)
-    {
-      dateInput.addEventListener("change", handleDateChange);
-    }
-
-    return () => {
-      if (dateInput)
-      {
-        dateInput.removeEventListener("change", handleDateChange);
-      }
-    };
-  }, []);
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -224,23 +181,140 @@ const ReservationForm = () => {
     });
 };
 
-    const [isOpen, setIsOpen] = useState(false); 
+    const [openingHours, setOpeningHours] = useState<any[]>([]);
+    const [holidays, setHolidays] = useState<Date[]>([]);
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [availableTimes, setAvailableTimes] = useState<string[]>([]);
     const [selectedValue, setSelectedValue] = useState("");
-  
-    const optionsTimeAllDay = ["12:00", "12:30", "13:00", "13:30", "14:00",
-                              "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"
-                              ];
+    const [isOpen, setIsOpen] = useState(false);
 
-    const optionsTimeHalfDayEvening = ["18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"
-                                      ];
-  
-    const handleSelect = (value: string) => {
-      setSelectedValue(value);
-      setIsOpen(false);
+    // Charger les horaires et jours fériés depuis la DB
+    useEffect(() => {
+      async function fetchData() {
+        // Opening hours
+        const { data: hoursData, error: hoursError } = await supabase
+          .from("opening_hours")
+          .select("*")
+          .eq("id", 1)
+          .single();
+
+        if (!hoursError && hoursData?.hours) {
+          setOpeningHours(hoursData.hours); // tableau de 7 éléments correspondant aux jours de la semaine
+        }
+
+        // Holidays
+        const { data: holidaysData, error: holidaysError } = await supabase
+          .from("holidays")
+          .select("periods");
+
+        if (!holidaysError && holidaysData) {
+          const allHolidayDates: Date[] = [];
+
+          holidaysData.forEach((row: any) => {
+            const periods = row.periods; // [{"debut": "...", "fin": "..."}]
+            if (Array.isArray(periods)) {
+              periods.forEach((p: any) => {
+                const start = new Date(p.debut);
+                const end = new Date(p.fin);
+
+                // Ajouter tous les jours entre start et end
+                for (
+                  let d = new Date(start);
+                  d <= end;
+                  d.setDate(d.getDate() + 1)
+                ) {
+                  allHolidayDates.push(new Date(d)); // créer une nouvelle instance pour éviter les références
+                }
+              });
+            }
+          });
+
+          setHolidays(allHolidayDates);
+        }
+      }
+
+      fetchData();
+    }, []);
+
+    // Vérifier si la date est un jour fermé
+    const isDateClosed = (date: Date) => {
+      const dayIndex = date.getDay() === 0 ? 6 : date.getDay() - 1; // dimanche=6
+      const dayHours = openingHours[dayIndex];
+      if (!dayHours) return true;
+
+      // Fermeture totale
+      if (dayHours.closedDay) return true;
+
+      // Vérifier jours fériés
+      if (holidays.some(h => h.toDateString() === date.toDateString())) return true;
+
+      return false;
     };
-  
-    const toggleDropdown = () => {
-      setIsOpen((prev) => !prev);
+
+    // Générer les horaires disponibles pour la date
+    const getAvailableTimes = (date: Date) => {
+      if (!openingHours.length) return [];
+      const dayIndex = date.getDay() === 0 ? 6 : date.getDay() - 1;
+      const dayHours = openingHours[dayIndex];
+      if (!dayHours || dayHours.closedDay) return [];
+
+      let times: string[] = [];
+
+      const generateSlots = (start: string, end: string) => {
+        const slots: string[] = [];
+        let [h, m] = start.split(":").map(Number);
+        const [endH, endM] = end.split(":").map(Number);
+        while (h < endH || (h === endH && m <= endM)) {
+          const twoDigits = (n: number) => n.toString().padStart(2, "0");
+          slots.push(`${twoDigits(h)}:${twoDigits(m)}`);
+          m += 30;
+          if (m >= 60) {
+            m -= 60;
+            h += 1;
+          }
+        }
+        return slots;
+      };
+
+      if (!dayHours.closedLunch && dayHours.midi.debut && dayHours.midi.fin) {
+        times.push(...generateSlots(dayHours.midi.debut, dayHours.midi.fin));
+      }
+
+      if (!dayHours.closedDiner && dayHours.soir.debut && dayHours.soir.fin) {
+        times.push(...generateSlots(dayHours.soir.debut, dayHours.soir.fin));
+      }
+
+      return times;
+    };
+
+    // Handler de sélection de date
+    const handleDateChange = (e: any) => {
+      const date = new Date(e.target.value);
+      if (isDateClosed(date)) {
+        alert("Le restaurant est fermé ce jour.");
+        e.target.value = "";
+        setSelectedDate(null);
+        setAvailableTimes([]);
+        setSelectedValue("");
+        return;
+      }
+
+      // Bloquer réservations pour le jour même après 16h
+      const today = new Date();
+      if (
+        date.toDateString() === today.toDateString() && // même jour
+        today.getHours() >= 16
+      ) {
+        alert("Les réservations pour le jour même sont fermées à partir de 16h.");
+        setSelectedDate(null);
+        setAvailableTimes([]);
+        setSelectedValue("");
+        return;
+      }
+
+      setSelectedDate(date);
+      setAvailableTimes(getAvailableTimes(date));
+      setSelectedValue("");
     };
 
     const translation = translations[selectedLanguage as keyof typeof translations];
@@ -514,28 +588,33 @@ const ReservationForm = () => {
                   >
                     {translation.eventDateLabel}
                   </label>
-                  <input 
-                    type="date" 
-                    id="datePicker" 
-                    name="eventDate" 
-                    required
-                    className="mt-1 block w-2/3 px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
+                  <input
+                    type="date"
+                    id="datePicker"
+                    name="eventDate"
+                    value={selectedDate ? selectedDate.toISOString().split("T")[0] : Date()}
                     onChange={(e) => {
-                      const newDate = new Date(e.target.value);
-                      setSelectedDate(newDate);       // ✅ met à jour la date sélectionnée
-                      setSelectedValue("");           // ✅ réinitialise l’horaire
-                      setEventDateTXT(() => {
-                        const day = newDate.getDate();
-                        const month = newDate.getMonth() + 1;
-                        const year = newDate.getFullYear();
-                        const twoDigits = (n: number) => n.toString().padStart(2, "0");
-                        return `${twoDigits(day)}-${twoDigits(month)}-${year}`;
-                      });
+                      const date = new Date(e.target.value);
+                      if (isDateClosed(date)) {
+                        alert("Le restaurant est fermé ce jour.");
+                        setSelectedDate(null);
+                        setAvailableTimes([]);
+                        setSelectedValue("");
+                        return;
+                      }
+                      setSelectedDate(date);
+                      setAvailableTimes(getAvailableTimes(date));
+                      setSelectedValue("");
+                      // Format pour EmailJS
+                      const twoDigits = (num: number) => num.toString().padStart(2, "0");
+                      setEventDateTXT(`${twoDigits(date.getDate())}-${twoDigits(date.getMonth() + 1)}-${date.getFullYear()}`);
                     }}
+                    className="mt-1 block w-2/3 px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
+                    required
                   />
                 </div>
 
-                { selectedDate.getMonth() + 1 === 7 || selectedDate.getMonth() + 1 === 8 ? (
+                {/* { selectedDate.getMonth() + 1 === 7 || selectedDate.getMonth() + 1 === 8 ? (
                   <p className="w-content text-sm pt-1">
                     {translation.infoDateLabelSummer}
                   </p>
@@ -547,7 +626,7 @@ const ReservationForm = () => {
                   <p className="w-content text-sm pt-1">
                     {translation.infoDateLabel}
                   </p>
-                )}
+                )} */}
               </div>
 
               <div className="w-full flex flex-row items-end justify-between">
@@ -561,46 +640,30 @@ const ReservationForm = () => {
                   type="text"
                   name="eventTime"
                   value={selectedValue}
-                  onClick={toggleDropdown}
-                  onChange={(e) => setSelectedValue(e.target.value)}
-                  className="mt-1 block w-2/3 px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
+                  onClick={() => setIsOpen(!isOpen)}
+                  readOnly
                   placeholder="Choisir une option"
+                  className="mt-1 block w-2/3 px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
                 />
-                
-                {isOpen && 
-                (
-                  selectedDate.getDay() === 1 ? (
-                    <ul
-                      className="absolute w-1/3 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10"
-                      style={{ maxHeight: "200px", overflowY: "auto" }}
-                    >
-                      {optionsTimeHalfDayEvening.map((option, index) => (
-                        <li
-                          key={index}
-                          className="px-4 py-2 cursor-pointer hover:bg-indigo-100"
-                          onClick={() => handleSelect(option)}
-                        >
-                          {option}
-                        </li>
-                      ))}
-                    </ul>
-                  ):(
-                    <ul
-                      className="absolute w-1/3 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10"
-                      style={{ maxHeight: "200px", overflowY: "auto" }}
-                    >
-                      {optionsTimeAllDay.map((option, index) => (
-                        <li
-                          key={index}
-                          className="px-4 py-2 cursor-pointer hover:bg-indigo-100"
-                          onClick={() => handleSelect(option)}
-                        >
-                          {option}
-                        </li>
-                      ))}
-                    </ul>
-                  )
-                )}            
+                {isOpen && selectedDate && (
+                  <ul className="absolute w-1/4 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
+                    {availableTimes.map((time, idx) => (
+                      <li
+                        key={idx}
+                        className="px-4 py-2 cursor-pointer hover:bg-indigo-100"
+                        onClick={() => {
+                          setSelectedValue(time);
+                          setIsOpen(false);
+                        }}
+                      >
+                        {time}
+                      </li>
+                    ))}
+                    {availableTimes.length === 0 && (
+                      <li className="px-4 py-2 text-gray-400">Aucun horaire disponible</li>
+                    )}
+                  </ul>
+                )}         
               </div>
             </div>
 

@@ -1,3 +1,7 @@
+'use client'
+
+import { supabase } from "@/lib/supabseClient";
+import { useEffect, useState } from "react";
 import CustomHeroBanner from "@/components/CustomHeroBanner";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
@@ -11,6 +15,25 @@ import { Banknote, CreditCard, Coins, Ticket } from "lucide-react";
 import React from "react";
 
 function ContactPage() {
+
+  const [hours, setHours] = useState<any[] | null>(null);
+  
+  useEffect(() => {
+    async function fetchHours() {
+      const { data, error } = await supabase
+        .from("opening_hours")
+        .select("hours")
+        .eq("id", 1)
+        .single();
+  
+      if (!error && data?.hours) {
+        setHours(data.hours);
+      }
+    }
+  
+    fetchHours();
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -84,28 +107,43 @@ function ContactPage() {
               </div>
             </div>
 
-            <div className="text-[#002E6D] border-4 w-fit mt-12 lg:mt-0 px-8 py-4 border-[#002E6D] flex flex-col items-center justify-center space-y-6 shadow-[-15px_15px_0_0_#002E6D]">
-              <h3 className="w-full text-center z-10 text-[#002E6D] border-b-4 border-[#002E6D] font-spaceTransit text-7xl tracking-wide">
-                horaires
-              </h3>
+            <div className="w-full text-redWine flex flex-col items-center justify-center">
+              <h4 className="font-specialElite text-4xl mb-3">HORAIRES</h4>
 
-              <div className="flex flex-col items-center justify-center">
-                <p>Juillet - Aout</p>
-                <p>Lundi - Samedi </p>
-                <p className="font-spaceTransit text-5xl">
-                  {" "}
-                  12:00 - 14:00 & 18:00 - 22:00
-                </p>
-              </div>
+              {!hours ? (
+                <p>Chargement...</p>
+              ) : (
+                <ul className="flex flex-col items-center justify-center space-y-2 text-center">
+                  {hours.map((h: any) => {
+                    const closedAllDay = h.closedDay;
+                    const closedLunch = h.closedLunch;
+                    const closedDiner = h.closedDiner;
 
-              <div className="flex flex-col items-center justify-center">
-                <p>Septembre - Juin</p>
-                <p>Mardi - Samedi </p>
-                <p className="font-spaceTransit text-5xl">
-                  {" "}
-                  12:00 - 14:00 & 18:00 - 22:00
-                </p>
-              </div>
+                    return (
+                      <li key={h.day} className="font-semibold">
+                        <strong>{h.day} :</strong>{" "}
+                        {closedAllDay ? (
+                          <span>fermé</span>
+                        ) : (
+                          <span>
+                            {/* Midi */}
+                            {closedLunch
+                              ? "fermé le midi"
+                              : `${h.midi.debut || "—"} - ${h.midi.fin || "—"}`}
+
+                            {" | "}
+
+                            {/* Soir */}
+                            {closedDiner
+                              ? "fermé le soir"
+                              : `${h.soir.debut || "—"} - ${h.soir.fin || "—"}`}
+                          </span>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
             </div>
           </div>
         </div>
