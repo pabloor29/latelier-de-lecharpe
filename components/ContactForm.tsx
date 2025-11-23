@@ -127,7 +127,7 @@ const ReservationForm = () => {
     tel: "",
     reservationTypeTable: Boolean(true),
     reservationTypeGroup: Boolean(false),
-    resarvationType: "TABLE",
+    resarvationType: "UNE TABLE",
     numberOfGuests: "",
     formule1:"",
     formule2:"",
@@ -169,8 +169,8 @@ const ReservationForm = () => {
     const formElement = formRef.current;
 
     Promise.all([
-        emailjs.sendForm("service_floridablanca", "template_resa_001", formElement, "sCSQ7jBUlaWzqKf5_"),
-        emailjs.sendForm("service_floridablanca", "template_resa_002", formElement, "sCSQ7jBUlaWzqKf5_")
+        emailjs.sendForm("service_pablo_001", "template_resa_001", formElement, "Hj5zsN3OJSMAXQ9TV"),
+        emailjs.sendForm("service_pablo_001", "template_resa_002", formElement, "Hj5zsN3OJSMAXQ9TV")
     ])
     .then(() => {
         formRef.current?.reset();
@@ -317,6 +317,70 @@ const ReservationForm = () => {
       setSelectedValue("");
     };
 
+
+    const generateFormulaTableHTML = () => {
+      if (!formData.reservationTypeGroup) return "";
+      
+      const formulas = [
+        { label: "Formule à 32€", quantity: formData.formule1, price: 32 },
+        { label: "Formule à 35€", quantity: formData.formule2, price: 35 },
+        { label: "Formule à 38€", quantity: formData.formule3, price: 38 },
+        { label: "Formule à 49€", quantity: formData.formule4, price: 49 },
+        { label: "Formule à 55€", quantity: formData.formule5, price: 55 },
+      ];
+
+      // Filtrer uniquement les formules avec une quantité > 0
+      const selectedFormulas = formulas.filter(f => Number(f.quantity) > 0);
+      
+      if (selectedFormulas.length === 0) return "";
+
+      // Calculer le total
+      const total = selectedFormulas.reduce(
+        (sum, f) => sum + Number(f.quantity) * f.price, 
+        0
+      );
+
+      // Générer le tableau HTML
+      let tableHTML = `
+        <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+          <thead>
+            <tr style="background-color: #002E6D; color: white;">
+              <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Formule</th>
+              <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">Quantité</th>
+              <th style="border: 1px solid #ddd; padding: 12px; text-align: right;">Prix unitaire</th>
+              <th style="border: 1px solid #ddd; padding: 12px; text-align: right;">Sous-total</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      selectedFormulas.forEach((formula, index) => {
+        const subtotal = Number(formula.quantity) * formula.price;
+        const bgColor = index % 2 === 0 ? '#f9f9f9' : 'white';
+        tableHTML += `
+          <tr style="background-color: ${bgColor};">
+            <td style="border: 1px solid #ddd; padding: 10px;">${formula.label}</td>
+            <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">${formula.quantity}</td>
+            <td style="border: 1px solid #ddd; padding: 10px; text-align: right;">${formula.price}€</td>
+            <td style="border: 1px solid #ddd; padding: 10px; text-align: right;">${subtotal}€</td>
+          </tr>
+        `;
+      });
+
+      tableHTML += `
+          </tbody>
+          <tfoot>
+            <tr style="background-color: #002E6D; color: white; font-weight: bold;">
+              <td colspan="3" style="border: 1px solid #ddd; padding: 12px; text-align: right;">TOTAL</td>
+              <td style="border: 1px solid #ddd; padding: 12px; text-align: right;">${total}€</td>
+            </tr>
+          </tfoot>
+        </table>
+      `;
+
+      return tableHTML;
+    };
+
     const translation = translations[selectedLanguage as keyof typeof translations];
 
   return (
@@ -341,6 +405,9 @@ const ReservationForm = () => {
             <input type="hidden" name="emailCompany" value="pab.ortg@gmail.com" />
             <input type="hidden" name="reservationState" value="EN ATTENTE DE CONFIRMATION" />
             <input type="hidden" name="reservationComment" value="Nous avons bien pris en compte votre demande et elle sera traitée dans les plus brefs délais. Veuillez noter que votre réservation ne sera confirmée qu’une fois que vous aurez reçu un mail de confirmation de notre part. Nous vous remercions pour votre patience et sommes impatients de vous accueillir !" />
+            <input type="hidden" name="formulaTable" value={generateFormulaTableHTML()} />
+            <input type="hidden" name="showFormulaTable" value={formData.reservationTypeGroup && (Number(formData.formule1) + Number(formData.formule2) + Number(formData.formule3) + Number(formData.formule4) + Number(formData.formule5)) > 0 ? "OUI" : "NON"} />
+            <input type="hidden" name="reservationType" value={formData.resarvationType} />
             <div className="flex items-center justify-between flex-row pb-8">
               <h3 className="text-blueDark text-xl sm:text-3xl md:text-4xl lg:text-2xl font-medium font-specialElite leading-none">
                 {translation.title}
@@ -418,6 +485,7 @@ const ReservationForm = () => {
                   </div>
                   <input
                     type="checkbox"
+                    id="reservationType"
                     className="scale-150"
                     checked={formData.reservationTypeTable}
                     onChange={(e) =>
@@ -425,7 +493,7 @@ const ReservationForm = () => {
                         ...formData,
                         reservationTypeTable: e.target.checked,
                         reservationTypeGroup: false,
-                        resarvationType: "TABLE",
+                        resarvationType: "UNE TABLE",
                       })
                     }
                   />
@@ -436,6 +504,7 @@ const ReservationForm = () => {
                   </div>
                   <input
                     type="checkbox"
+                    id="reservationType"
                     className="scale-150"
                     checked={formData.reservationTypeGroup}
                     onChange={(e) =>
@@ -443,7 +512,7 @@ const ReservationForm = () => {
                         ...formData,
                         reservationTypeGroup: e.target.checked,
                         reservationTypeTable: false,
-                        resarvationType: "GROUP",
+                        resarvationType: "UN GROUPE",
                       })
                     }
                   />
