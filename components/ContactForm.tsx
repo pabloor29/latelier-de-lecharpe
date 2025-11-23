@@ -251,7 +251,26 @@ const ReservationForm = () => {
       return false;
     };
 
-    // Générer les horaires disponibles pour la date
+    const RESERVATION_LIMITS = {
+      midi: {
+        start: "12:00",
+        end: "14:00"
+      },
+      soir: {
+        start: "19:00",
+        end: "23:00"
+      }
+    };
+
+    // Fonction utilitaire pour convertir "HH:MM" en minutes (gérant le passage à minuit)
+    const timeToMinutes = (time: string, afterMidnight: boolean = false) => {
+      const [h, m] = time.split(":").map(Number);
+      const minutes = h * 60 + m;
+      // Si c'est après minuit (heures < 12 dans un contexte du soir), ajouter 24h
+      return afterMidnight ? minutes + (24 * 60) : minutes;
+    };
+
+    // Modifiez la fonction getAvailableTimes
     const getAvailableTimes = (date: Date) => {
       if (!openingHours.length) return [];
       const dayIndex = date.getDay() === 0 ? 6 : date.getDay() - 1;
@@ -260,28 +279,55 @@ const ReservationForm = () => {
 
       let times: string[] = [];
 
-      const generateSlots = (start: string, end: string) => {
+      const generateSlots = (start: string, end: string, limitStart: string, limitEnd: string) => {
         const slots: string[] = [];
-        let [h, m] = start.split(":").map(Number);
-        const [endH, endM] = end.split(":").map(Number);
-        while (h < endH || (h === endH && m <= endM)) {
+        
+        // Détecter si l'heure de fin passe minuit (ex: 02:00 après 19:00)
+        const startHour = parseInt(start.split(":")[0]);
+        const endHour = parseInt(end.split(":")[0]);
+        const afterMidnight = endHour < startHour;
+        
+        // Convertir les heures en minutes
+        const startMinutes = timeToMinutes(start, false);
+        const endMinutes = timeToMinutes(end, afterMidnight);
+        const limitStartMinutes = timeToMinutes(limitStart, false);
+        const limitEndMinutes = timeToMinutes(limitEnd, false);
+        
+        // Utiliser les limites de réservation au lieu des horaires d'ouverture
+        const effectiveStart = Math.max(startMinutes, limitStartMinutes);
+        const effectiveEnd = Math.min(endMinutes, limitEndMinutes);
+        
+        let currentMinutes = effectiveStart;
+        
+        while (currentMinutes <= effectiveEnd) {
+          const h = Math.floor(currentMinutes / 60) % 24; // Modulo 24 pour gérer le passage à minuit
+          const m = currentMinutes % 60;
           const twoDigits = (n: number) => n.toString().padStart(2, "0");
           slots.push(`${twoDigits(h)}:${twoDigits(m)}`);
-          m += 30;
-          if (m >= 60) {
-            m -= 60;
-            h += 1;
-          }
+          currentMinutes += 30;
         }
+        
         return slots;
       };
 
+      // Midi - avec limites de réservation
       if (!dayHours.closedLunch && dayHours.midi.debut && dayHours.midi.fin) {
-        times.push(...generateSlots(dayHours.midi.debut, dayHours.midi.fin));
+        times.push(...generateSlots(
+          dayHours.midi.debut, 
+          dayHours.midi.fin,
+          RESERVATION_LIMITS.midi.start,
+          RESERVATION_LIMITS.midi.end
+        ));
       }
 
+      // Soir - avec limites de réservation
       if (!dayHours.closedDiner && dayHours.soir.debut && dayHours.soir.fin) {
-        times.push(...generateSlots(dayHours.soir.debut, dayHours.soir.fin));
+        times.push(...generateSlots(
+          dayHours.soir.debut, 
+          dayHours.soir.fin,
+          RESERVATION_LIMITS.soir.start,
+          RESERVATION_LIMITS.soir.end
+        ));
       }
 
       return times;
