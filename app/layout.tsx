@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "L'atelier de l'écharpe",
   description: "Ben & Gilles sont ravis de vous accueillir à l'Atelier de l'Echarpe, nouveau lieu de fiesta à Toulouse, 8 rue de l'écharpe 31000 Toulouse, tout près de la place Esquirol, de l'hotel d'Assezat et du Pont-Neuf.",
-  icons: "#",
+  icons: "/img/logo/logo-red.png",
 };
 
 export default function RootLayout({
@@ -29,10 +29,10 @@ export default function RootLayout({
         <meta name="keywords" content="Bar, Bar à cocktails, Cocktails, Vin, Bar à vin, Restaurant Toulouse, Restaurant, Toulouse, Cocktails Toulouse, Bar à cocktails Toulouse, Bar à vin Toulouse" />
         <meta name="description" content="Ben & Gilles sont ravis de vous accueillir à l'Atelier de l'Echarpe, nouveau lieu de fiesta à Toulouse, 8 rue de l'écharpe 31000 Toulouse, tout près de la place Esquirol, de l'hotel d'Assezat et du Pont-Neuf." />
         <meta property="og:title" content="L'atelier de l'écharpe" />
-        <meta property="og:image" content="#" />
-        <meta property="og:url" content="https://www.floridablanca.fr/" />
+        <meta property="og:image" content="/img/info/resume-page-cream.jpg" />
+        <meta property="og:url" content="http://www.latelierdelecharpe.fr/" />
         <meta charSet="utf-8"></meta>
-        <link rel="icon" href="#"></link>
+        <link rel="icon" href="/img/logo/logo-red.png"></link>
       </Head>
       <body className={inter.className}>
         {children}

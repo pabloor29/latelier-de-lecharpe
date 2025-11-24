@@ -13,9 +13,10 @@ export const revalidate = 0 // selon besoin
 
 export default async function AdminPage() {
 
-    console.log("Admin page loaded!");
+  console.log("Admin page loaded!");
 
-  const supabase = createServerComponentClient({ cookies })
+  const supabase = createServerComponentClient({ cookies });
+
   const {
     data: { session }
   } = await supabase.auth.getSession()
@@ -44,7 +45,7 @@ export default async function AdminPage() {
     redirect('/amdin')
   }
   else {
-    console.log("User not admin");
+    // console.log("User not admin");
   }
 
   // OK : c'est un admin -> afficher la page admin

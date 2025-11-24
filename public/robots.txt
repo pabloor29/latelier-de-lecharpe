@@ -8,4 +8,4 @@ Disallow: /reservation-autoreply/
 Allow: /$
 
 # Sitemap : Indique à Google où trouver le fichier sitemap.xml
-Sitemap: https://www.floridablanca.fr/sitemap.xml
+Sitemap: http://www.laterlierdelecharpe.fr/sitemap.xml

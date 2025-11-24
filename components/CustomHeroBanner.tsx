@@ -19,13 +19,13 @@ const textVariants: Variants = {
 
 function CustomHeroBanner(props: any) {
   return (
-    <div className="h-96 relative bg-redWine">
+    <div
+      className="h-96 relative"
+      style={{
+        backgroundColor: props.colorBG || "#000", // couleur par défaut si rien n'est fourni
+      }}
+    >
       <div className="w-full h-full z-40 absolute"></div>
-      <img
-        src={props.img}
-        alt=""
-        className="h-full w-full object-cover absolute z-30 grayscale"
-      />
 
       <div className="relative z-40 h-full flex flex-col items-center justify-center leading-none">
         <motion.h1
@@ -34,6 +34,9 @@ function CustomHeroBanner(props: any) {
           viewport={{ once: true }}
           variants={textVariants}
           className="text-mustard font-specialElite tracking-wide z-40 text-5xl"
+          style={{
+            color: props.colorText || "#000", // couleur par défaut si rien n'est fourni
+          }}
         >
           {props.title}
         </motion.h1>

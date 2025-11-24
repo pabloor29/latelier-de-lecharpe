@@ -21,7 +21,7 @@ const ReservationForm = () => {
       emailLabel: "Email",
       clasicTableReservation: "Réservation classique pour une table",
       groupFormulaReservation: "Réservation pour un groupe avec formule",
-      numberOfGuestsLabel: "Nombre de personnes",
+      numberOfGuestsLabel: "Nombre de couverts",
       formulaSelectorLabel:"Le détails des fomrules est disponible sur notre page d'accueil. Pour chaque formule, indiquez la quantité souhaitée.",
       formula1Label: "Formule à 32€",
       formula2Label: "Formule à 35€",
@@ -29,9 +29,6 @@ const ReservationForm = () => {
       formula4Label: "Formule à 49€",
       formula5Label: "Formule à 55€",
       eventDateLabel: "Date",
-      infoDateLabel: "(Fermé lundi et dimanche)",
-      infoDateLabelSummer: "(Fermé dimanche et lundi midi)",
-      infoDateLabelHollidays: "(Fermé en novembre, décembre, janvier et février)",
       eventTimeLabel: "Heure",
 
       specialRequestsLabel: "Demandes speciales",
@@ -45,19 +42,16 @@ const ReservationForm = () => {
       title: "Reservation request",
       fullNameLabel: "Full name",
       emailLabel: "Email",
-      clasicTableReservation: "Réservation classique pour une table",
-      groupFormulaReservation: "Réservation pour un groupe avec formule",
+      clasicTableReservation: "Standard table reservation",
+      groupFormulaReservation: "Group reservation with package deal",
       numberOfGuestsLabel: "Number of people",
-      formulaSelectorLabel:"Le détails des fomrules est disponible sur notre page d'accueil. Pour chaque formule, indiquez le nombre souhaité",
-      formula1Label: "Formule à 32€",
-      formula2Label: "Formule à 35€",
-      formula3Label: "Formule à 38€",
-      formula4Label: "Formule à 49€",
-      formula5Label: "Formule à 55€",
+      formulaSelectorLabel:"Details of the packages are available on our homepage. For each package, please indicate the desired quantity.",
+      formula1Label: "32€ package",
+      formula2Label: "35€ package",
+      formula3Label: "38€ package",
+      formula4Label: "49€ package",
+      formula5Label: "55€ package",
       eventDateLabel: "Date",
-      infoDateLabel: "(Closed on Monday and Sunday)",
-      infoDateLabelSummer: "(Closed on Sunday and Monday lunchtime)",
-      infoDateLabelHollidays: "(Closed in November, December, January, and February)",
       eventTimeLabel: "Time",
 
       specialRequestsLabel: "Special requests",
@@ -71,19 +65,16 @@ const ReservationForm = () => {
       title: "Solicitud de reserva",
       fullNameLabel: "Nombre completo",
       emailLabel: "Correo electronico",
-      clasicTableReservation: "Réservation classique pour une table",
-      groupFormulaReservation: "Réservation pour un groupe avec formule",
+      clasicTableReservation: "Reserva clásica para una mesa",
+      groupFormulaReservation: "Reserva para un grupo con fórmula",
       numberOfGuestsLabel: "Numero de personas",
-      formulaSelectorLabel:"Le détails des fomrules est disponible sur notre page d'accueil. Pour chaque formule, indiquez le nombre souhaité",
-      formula1Label: "Formule à 32€",
-      formula2Label: "Formule à 35€",
-      formula3Label: "Formule à 38€",
-      formula4Label: "Formule à 49€",
-      formula5Label: "Formule à 55€",
+      formulaSelectorLabel:"Los detalles de los paquetes están disponibles en nuestra página de inicio. Indique la cantidad deseada para cada paquete.",
+      formula1Label: "Fórmula a 32€",
+      formula2Label: "Fórmula a 35€",
+      formula3Label: "Fórmula a 38€",
+      formula4Label: "Fórmula a 49€",
+      formula5Label: "Fórmula a 55€",
       eventDateLabel: "Fecha",
-      infoDateLabel: "(Cerrado los lunes y domingos)",
-      infoDateLabelSummer: "(Cerrado el domingo y el lunes al mediodía)",
-      infoDateLabelHollidays: "(Cerrado en noviembre, diciembre, enero y febrero)",
       eventTimeLabel: "Hora",
 
       specialRequestsLabel: "Solicitudes especiales",
@@ -97,19 +88,16 @@ const ReservationForm = () => {
       title: "Richiesta di prenotazione",
       fullNameLabel: "Nome completo",
       emailLabel: "Email",
-      clasicTableReservation: "Réservation classique pour une table",
-      groupFormulaReservation: "Réservation pour un groupe avec formule",
+      clasicTableReservation: "Prenotazione classica per un tavolo",
+      groupFormulaReservation: "Prenotazione per un gruppo con formula",
       numberOfGuestsLabel: "Numero di persone",
-      formulaSelectorLabel:"Le détails des fomrules est disponible sur notre page d'accueil. Pour chaque formule, indiquez le nombre souhaité",
-      formula1Label: "Formule à 32€",
-      formula2Label: "Formule à 35€",
-      formula3Label: "Formule à 38€",
-      formula4Label: "Formule à 49€",
-      formula5Label: "Formule à 55€",
+      formulaSelectorLabel:"I dettagli delle formule sono disponibili sulla nostra home page. Per ogni formula, indicare la quantità desiderata.",
+      formula1Label: "Formula a 32€",
+      formula2Label: "Formula a 35€",
+      formula3Label: "Formula a 38€",
+      formula4Label: "Formula a 49€",
+      formula5Label: "Formula a 55€",
       eventDateLabel: "Data",
-      infoDateLabel: "(Chiuso il lunedì e la domenica)",
-      infoDateLabelSummer: "(Chiuso la domenica e il lunedì a pranzo)",
-      infoDateLabelHollidays: "(Chiuso a novembre, dicembre, gennaio e febbraio)",
       eventTimeLabel: "Ora",
 
       specialRequestsLabel: "Richieste speciali",
@@ -728,20 +716,6 @@ const ReservationForm = () => {
                     required
                   />
                 </div>
-
-                {/* { selectedDate.getMonth() + 1 === 7 || selectedDate.getMonth() + 1 === 8 ? (
-                  <p className="w-content text-sm pt-1">
-                    {translation.infoDateLabelSummer}
-                  </p>
-                ) : selectedDate.getMonth() + 1 === 11 || selectedDate.getMonth() + 1 === 12 || selectedDate.getMonth() + 1 === 1 || selectedDate.getMonth() + 1 === 2 ? (
-                  <p className="w-content text-sm pt-1">
-                    {translation.infoDateLabelHollidays}
-                  </p>
-                ):(
-                  <p className="w-content text-sm pt-1">
-                    {translation.infoDateLabel}
-                  </p>
-                )} */}
               </div>
 
               <div className="w-full flex flex-row items-end justify-between">
