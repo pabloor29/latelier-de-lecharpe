@@ -1,7 +1,13 @@
 "use client";
 
-import { saveOpeningHours, supabase } from "@/lib/supabseClient";
+import { saveOpeningHours } from "@/lib/supabaseClient";
 import React, { useEffect, useState } from "react";
+import { createBrowserClient } from '@supabase/ssr';
+
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 const days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
 

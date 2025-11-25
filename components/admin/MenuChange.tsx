@@ -1,7 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabseClient";
+import { createBrowserClient } from '@supabase/ssr';
+
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 const MENU_TYPES = ["brunch", "diner", "fiesta"] as const;
 type MenuType = (typeof MENU_TYPES)[number];

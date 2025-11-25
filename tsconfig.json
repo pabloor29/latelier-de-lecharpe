@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "lib/supabseClient.ts",
+    "lib/supabaseClient.ts",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [

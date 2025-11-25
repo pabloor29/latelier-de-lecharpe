@@ -38,4 +38,3 @@ export async function saveHolidays(restaurantId: number, periods: any[]) {
     throw error;
   }
 }
-

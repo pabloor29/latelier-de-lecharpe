@@ -1,7 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { supabase, saveHolidays } from "@/lib/supabseClient";
+import { saveHolidays } from "@/lib/supabaseClient";
+import { createBrowserClient } from '@supabase/ssr';
+
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 function HolidaysChange() {
   const [periods, setPeriods] = useState([{ debut: "", fin: "" }]);
