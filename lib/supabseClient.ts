@@ -1,11 +1,12 @@
 // lib/supabaseClient.ts
-import { createClient } from '@supabase/supabase-js'
+'use client'
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const publicAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+import { createBrowserClient } from '@supabase/ssr'
 
-export const supabase = createClient(url, publicAnonKey)
-
+export const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 export async function saveOpeningHours(id: number, data: any[]) {
   const { error } = await supabase
