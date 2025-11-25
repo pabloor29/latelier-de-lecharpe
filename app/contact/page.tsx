@@ -42,22 +42,27 @@ function ContactPage() {
   return (
     <>
       <Navbar />
-      <CustomHeroBanner title="Contact" img="/IMG_0234.webp" />
+      <CustomHeroBanner title="contact" colorText="#C89D4C" colorBG="#FBE9D5" />
 
-      <div className="w-full flex flex-col lg:flex-row justify-between lg:space-x-8 space-y-8 lg:space-y-0">
-        <div className="lg:h-[750px] h-[1100px] lg:w-1/2 lg:pl-16 space-y-8 flex flex-col items-center justify-center lg:py-12">
-          <h3 className="z-10 leading-none text-[#002E6D] text-4xl tracking-wide">
-            L'aterlier de l'écharpe
-          </h3>
+      <div className="w-full flex flex-col lg:flex-row justify-between lg:space-x-8 space-y-12 lg:space-y-0">
+        <div className="lg:w-1/2 lg:pl-8 flex flex-col items-center justify-center lg:py-8">
 
-          <div className="flex flex-col lg:flex-row items-center justify-between lg:space-x-16">
-            <div className="flex flex-col justify-between items-center space-y-12">
-              <div className="text-[#002E6D] flex flex-col space-y-3 items-center lg:items-start justify-center">
+          <img
+            src="/img/logo/logo-red.png"
+            alt="Logo"
+            className="w-1/2"
+          />
+
+          <div className="flex flex-col md:flex-row justify-between space-y-12 md:space-x-10">
+            <div className="flex flex-col justify-between items-center space-y-8">
+              <div className="text-blueLight font-specialElite flex flex-col space-y-3 items-center lg:items-start justify-center">
                 <h4 className="underline">
-                  8 rue de l'Écharpe, 31000 Toulouse
+                  <a href="https://www.google.com/maps/dir//8+Rue+de+l'%C3%89charpe+31000+Toulouse/@43.6020582,1.4458477,17z/data=!4m8!4m7!1m0!1m5!1m1!1s0x12aebc9daaafffff:0x6b0c27a5efb0ecff!2m2!1d1.4458477!2d43.6020582?entry=ttu&g_ep=EgoyMDI1MTExNy4wIKXMDSoASAFQAw%3D%3D">
+                    8 rue de l'Écharpe, 31000 Toulouse
+                  </a>
                 </h4>
                 <a href="tel:+33534309335">TEL : +33 5 34 30 93 35</a>
-                {/* <a href="">Mobile : +33 6 34 29 48 74</a> */}
+                {/* <a href="tel:">Mobile : +33</a> */}
               </div>
 
               <div className="text-[#002E6D] w-full flex flex-col space-y-3 items-center lg:items-start justify-center">
@@ -112,13 +117,13 @@ function ContactPage() {
               </div>
             </div>
 
-            <div className="w-full text-redWine flex flex-col items-center justify-center">
-              <h4 className="font-specialElite text-4xl mb-3">HORAIRES</h4>
+            <div className="lg:w-3/4 text-redWine flex flex-col">
+              <h4 className="font-specialElite text-4xl mb-3 text-center">HORAIRES</h4>
 
               {!hours ? (
                 <p>Chargement...</p>
               ) : (
-                <ul className="flex flex-col items-center justify-center space-y-2 text-center">
+                <ul className="flex flex-col items-center lg:items-end justify-center space-y-2">
                   {hours.map((h: any) => {
                     const closedAllDay = h.closedDay;
                     const closedLunch = h.closedLunch;
