@@ -15,10 +15,6 @@ import { redirect } from 'next/navigation';
 
 export const revalidate = 0;
 
-console.log("RUNNING SSR");
-console.log("SUPABASE_URL:", process.env.SUPABASE_URL);
-console.log("SUPABASE_ANON_KEY exists:", !!process.env.SUPABASE_ANON_KEY);
-
 
 export default async function AdminPage() {
   console.log("Admin page loaded!");
@@ -26,8 +22,8 @@ export default async function AdminPage() {
   const cookieStore = cookies();
 
   const supabase = createServerClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         get(name: string) {
