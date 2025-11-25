@@ -3,8 +3,14 @@
 import CustomHeroBanner from "@/components/CustomHeroBanner";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Variants, motion } from "framer-motion";
+import { createBrowserClient } from '@supabase/ssr';
+
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 const imagesVariants: Variants = {
   hiddenBottom: {
@@ -46,6 +52,55 @@ const imagesVariants: Variants = {
 };
 
 function FiestaPage() {
+
+  const [imgFiles, setimgFiles] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadFiestaFiles() {
+      try {
+        console.log("=== CHARGEMENT DES MENUS BRUNCH ===");
+        
+        // Récupérer les fichiers de type "brunch" depuis la DB
+        const { data, error } = await supabase
+          .from("menu_files")
+          .select("*")
+          .eq("category", "brunch")
+          .order("id", { ascending: true });
+
+        console.log("Résultat query:", { data, error });
+
+        if (error) {
+          console.error("Erreur chargement fichiers:", error);
+          return;
+        }
+
+        if (data && data.length > 0) {
+          console.log("Fichiers trouvés:", data);
+          
+          // Générer les URLs publiques
+          const urls = data.map((file) => {
+            const { data: urlData } = supabase.storage
+              .from("menus")
+              .getPublicUrl(file.file_path);
+            console.log("URL générée pour", file.file_path, ":", urlData.publicUrl);
+            return urlData.publicUrl;
+          });
+
+          setimgFiles(urls);
+        } else {
+          console.log("Aucune donnée trouvée");
+        }
+      } catch (err) {
+        console.error("Erreur:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadFiestaFiles();
+  }, []);
+  
   return (
     <>
       <Navbar />
@@ -82,21 +137,20 @@ function FiestaPage() {
         </div>
 
         <div className="lg:w-3/5 w-11/12 flex flex-col items-center justify-center py-20 space-y-6">
-          <img
-            className="w-full h-auto object-cover"
-            src="/carteETE2025-1.webp"
-            alt=""
-          />
-          <img
-            className="w-full h-auto object-cover"
-            src="/carteETE2025-2.webp"
-            alt=""
-          />
-          <img
-            className="w-full h-auto object-cover"
-            src="/carteETE2025-3.webp"
-            alt=""
-          />
+          {loading ? (
+            <p className="text-center font-specialElite">Chargement des menus...</p>
+          ) : imgFiles.length > 0 ? (
+            imgFiles.map((url, index) => (
+              <img
+                key={index}
+                src={url}
+                className="w-full object-fill"
+                title={`Menu brunch ${index + 1}`}
+              />
+            ))
+          ) : (
+            <p className="text-center font-specialElite">Aucun menu disponible pour le moment.</p>
+          )}
         </div>
       </div>
 

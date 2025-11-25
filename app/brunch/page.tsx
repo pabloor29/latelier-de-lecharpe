@@ -52,7 +52,7 @@ const imagesVariants: Variants = {
 };
 
 function BrunchPage() {
-  const [pdfFiles, setPdfFiles] = useState<string[]>([]);
+  const [imgFiles, setimgFiles] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -86,7 +86,7 @@ function BrunchPage() {
             return urlData.publicUrl;
           });
 
-          setPdfFiles(urls);
+          setimgFiles(urls);
         } else {
           console.log("Aucune donnée trouvée");
         }
@@ -137,12 +137,12 @@ function BrunchPage() {
         <div className="lg:w-3/5 w-11/12 flex flex-col items-center justify-center py-20 space-y-6">
           {loading ? (
             <p className="text-center font-specialElite">Chargement des menus...</p>
-          ) : pdfFiles.length > 0 ? (
-            pdfFiles.map((url, index) => (
-              <iframe
+          ) : imgFiles.length > 0 ? (
+            imgFiles.map((url, index) => (
+              <img
                 key={index}
                 src={url}
-                className="w-full h-[800px] border-2 border-blueLight rounded-md"
+                className="w-full object-fill"
                 title={`Menu brunch ${index + 1}`}
               />
             ))
