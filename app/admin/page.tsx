@@ -1,69 +1,81 @@
 // app/admin/page.tsx  (server component)
+
 import GroupFormulas from '@/components/admin/GroupFormulas';
 import HolidaysChange from '@/components/admin/HolidaysChange';
 import HomePage from '@/components/admin/HomePage';
 import MenuChange from '@/components/admin/MenuChange';
 import RubanAdmin from '@/components/admin/RubanAdmin';
 import ScheduleChange from '@/components/admin/ScheduleChange';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
 
-export const revalidate = 0 // selon besoin
+import SignOutButton from '@/components/admin/SignOutButton'
+
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+
+export const revalidate = 0;
 
 export default async function AdminPage() {
-
   console.log("Admin page loaded!");
 
-  const supabase = createServerComponentClient({ cookies });
+  const cookieStore = cookies();
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return cookieStore.get(name)?.value;
+        }
+      }
+    }
+  );
 
   const {
     data: { session }
-  } = await supabase.auth.getSession()
+  } = await supabase.auth.getSession();
 
   if (!session) {
-    // pas connecté -> redirection vers login
-    redirect('/admin/login')
+    redirect('/admin/login');
   }
 
-  // Recuperer le profile
   const { data: profile, error } = await supabase
     .from('profiles')
     .select('is_admin, email, username')
     .eq('id', session.user.id)
-    .single()
+    .single();
 
   if (error || !profile) {
-    // pas de profil -> redirection
-    console.log("Profile not found...")
-    redirect('/admin/login')
+    console.log("Profile not found...");
+    redirect('/admin/login');
   }
 
   if (!profile.is_admin) {
-    // connecté mais pas admin -> redirection vers racine (ou 403)
-    console.log("User admin connected");
-    redirect('/amdin')
-  }
-  else {
-    // console.log("User not admin");
+    console.log("User is not admin");
+    redirect('/');
   }
 
-  // OK : c'est un admin -> afficher la page admin
-    return (
-        <div className='bg-cream flex flex-col items-center'>
-                
-            <RubanAdmin />
-            
-            <div className="w-2/3">
-                <HomePage email={profile.email} />
-            </div>
-
-            <section className='flex flex-col gap-20 w-2/3 mb-10'>
-                <MenuChange />
-                <GroupFormulas />
-                <ScheduleChange />
-                <HolidaysChange />
-            </section>
+  // OK : admin authentifié
+  return (
+    <div className='bg-cream flex flex-col items-center'>
+      <RubanAdmin />
+      
+      <div className="w-2/3 flex flex-row justify-between items-center">
+        <div className="">
+          <HomePage email={profile.email} />
         </div>
-    )
+        <div className="">
+          <SignOutButton />
+        </div>
+      </div>
+
+      <section className='flex flex-col gap-20 w-2/3 mb-10'>
+        <MenuChange />
+        <GroupFormulas />
+        <ScheduleChange />
+        <HolidaysChange />
+      </section>
+    </div>
+  );
 }
