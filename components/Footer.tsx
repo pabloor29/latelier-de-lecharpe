@@ -1,9 +1,14 @@
 'use client'
 
-import { supabase } from "@/lib/supabseClient";
 import { useEffect, useState } from "react";
 import { Instagram, Mail, Phone } from "lucide-react";
 import React from "react";
+import { createBrowserClient } from '@supabase/ssr';
+
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 function Footer() {
 

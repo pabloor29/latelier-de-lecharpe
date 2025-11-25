@@ -5,7 +5,12 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import React, { useState, useEffect } from "react";
 import { Variants, motion } from "framer-motion";
-import { supabase } from "@/lib/supabseClient";
+import { createBrowserClient } from '@supabase/ssr';
+
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 const imagesVariants: Variants = {
   hiddenBottom: {

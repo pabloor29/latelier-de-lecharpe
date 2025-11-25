@@ -1,6 +1,5 @@
 'use client'
 
-import { supabase } from "@/lib/supabseClient";
 import { useEffect, useState } from "react";
 import CustomHeroBanner from "@/components/CustomHeroBanner";
 import Footer from "@/components/Footer";
@@ -13,6 +12,12 @@ import {
 } from "@/components/ui/tooltip";
 import { Banknote, CreditCard, Coins, Ticket } from "lucide-react";
 import React from "react";
+import { createBrowserClient } from '@supabase/ssr';
+
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 function ContactPage() {
 

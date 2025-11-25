@@ -1,6 +1,5 @@
 "use client";
 
-import { supabase } from "@/lib/supabseClient";
 import { BadgeCheck } from "lucide-react";
 import React, { useState , useEffect , useRef } from "react";
 import CustomTimePicker from "./CustomTimePicker";
@@ -9,6 +8,12 @@ import DatePicker from "react-datepicker";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import { fr } from "date-fns/locale";
 import emailjs from "@emailjs/browser";
+import { createBrowserClient } from '@supabase/ssr';
+
+const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 registerLocale("fr", fr);
 setDefaultLocale("fr");
