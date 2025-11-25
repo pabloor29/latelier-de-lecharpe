@@ -135,7 +135,7 @@ function ScheduleChange() {
 
   return (
     <div>
-      <h1 className="font-specialElite pb-2">Horaires d'ouverture</h1>
+      <h1 className="font-specialElite text-xl mb-4">Horaires d'ouverture</h1>
 
       {/* Desktop: tableau complet */}
       <div className="hidden md:block">

@@ -38,3 +38,20 @@ export async function saveHolidays(restaurantId: number, periods: any[]) {
     throw error;
   }
 }
+
+export async function getFormules() {
+  const { data, error } = await supabase
+    .from("formules")
+    .select("*")
+    //.order("prix", { ascending: true, foreignTable: "numeric" });
+
+  if (error) {
+    console.error(error);
+    return [];
+  }
+
+  return data.map(f => ({
+    ...f,
+    elements: typeof f.elements === "string" ? JSON.parse(f.elements) : f.elements
+  }));
+}

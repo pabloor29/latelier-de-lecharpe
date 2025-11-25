@@ -53,7 +53,7 @@ function HolidaysChange() {
 
   return (
     <div>
-      <h1 className="font-specialElite pb-2">Périodes de vacances</h1>
+      <h1 className="font-specialElite text-xl mb-4">Périodes de vacances</h1>
 
       <div className="space-y-4">
         {periods.map((p, i) => (
