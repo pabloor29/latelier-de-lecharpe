@@ -15,6 +15,11 @@ import { redirect } from 'next/navigation';
 
 export const revalidate = 0;
 
+console.log("RUNNING SSR");
+console.log("SUPABASE_URL:", process.env.SUPABASE_URL);
+console.log("SUPABASE_ANON_KEY exists:", !!process.env.SUPABASE_ANON_KEY);
+
+
 export default async function AdminPage() {
   console.log("Admin page loaded!");
 
@@ -26,11 +31,13 @@ export default async function AdminPage() {
     {
       cookies: {
         get(name: string) {
-          return cookieStore.get(name)?.value;
-        }
+          return cookieStore.get(name)?.value
+        },
+        set() {},   // obligatoire
+        remove() {} // obligatoire
       }
     }
-  );
+  )
 
   const {
     data: { session }
