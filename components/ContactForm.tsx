@@ -12,10 +12,39 @@ const supabase = createBrowserClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 )
 
+type Formule = {
+  id: number;
+  nom: string;
+  prix: number;
+  description: string | null;
+  elements: string[];
+  active: boolean;
+};
+
 registerLocale("fr", fr);
 setDefaultLocale("fr");
 
 const ReservationForm = () => {
+
+  const [formules, setFormules] = useState<Formule[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchFormules = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("formules")
+      .select("*")
+      .order("prix", { ascending: true });
+
+    if (error) {
+      console.error(error);
+      setFormules([]);
+    } else if (data) {
+      setFormules(data.filter((f: any) => f.active));
+    }
+    setLoading(false);
+  };
+
   const translations = {
     fr: {
       title: "Demande de reservation",
@@ -119,11 +148,7 @@ const ReservationForm = () => {
     reservationTypeGroup: Boolean(false),
     resarvationType: "UNE TABLE",
     numberOfGuests: "",
-    formule1:"",
-    formule2:"",
-    formule3:"",
-    formule4:"",
-    formule5:"",
+    formuleQuantities: {} as Record<string, number>,
     eventDate: new Date(),
     eventTime: "",
     specialRequests: "",
@@ -135,13 +160,35 @@ const ReservationForm = () => {
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
 
-    console.log(formData.eventDate, formData.eventTime);
+    // Vérifier si le champ est une formule (id numérique)
+    if (formules.some(f => f.id.toString() === name)) {
+      const id = Number(name);
+      setFormData({
+        ...formData,
+        formuleQuantities: {
+          ...formData.formuleQuantities,
+          [id]: Number(value),
+        },
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
+
+  const handleFormuleChange = (id: number, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      formuleQuantities: {
+        ...prev.formuleQuantities,
+        [id]: Number(value), // on convertit en nombre
+      },
+    }));
+  };
+
 
   const [eventDateTXT, setEventDateTXT] = useState("");
 
@@ -224,6 +271,8 @@ const ReservationForm = () => {
       }
 
       fetchData();
+
+      fetchFormules();
     }, []);
 
     // Vérifier si la date est un jour fermé
@@ -356,49 +405,39 @@ const ReservationForm = () => {
 
     const generateFormulaTableHTML = () => {
       if (!formData.reservationTypeGroup) return "";
-      
-      const formulas = [
-        { label: "Formule à 32€", quantity: formData.formule1, price: 32 },
-        { label: "Formule à 35€", quantity: formData.formule2, price: 35 },
-        { label: "Formule à 38€", quantity: formData.formule3, price: 38 },
-        { label: "Formule à 49€", quantity: formData.formule4, price: 49 },
-        { label: "Formule à 55€", quantity: formData.formule5, price: 55 },
-      ];
 
-      // Filtrer uniquement les formules avec une quantité > 0
-      const selectedFormulas = formulas.filter(f => Number(f.quantity) > 0);
-      
-      if (selectedFormulas.length === 0) return "";
+      const selectedFormulas = formules
+        .map((f) => ({
+          ...f,
+          quantity: formData.formuleQuantities[f.nom] || 0,
+        }))
+        .filter(f => f.quantity > 0);
 
-      // Calculer le total
-      const total = selectedFormulas.reduce(
-        (sum, f) => sum + Number(f.quantity) * f.price, 
-        0
-      );
+      if (!selectedFormulas.length) return "";
 
-      // Générer le tableau HTML
+      const total = selectedFormulas.reduce((sum, f) => sum + f.quantity * f.prix, 0);
+
       let tableHTML = `
-        <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+        <table style="width:100%; border-collapse: collapse; margin:20px 0;">
           <thead>
-            <tr style="background-color: #002E6D; color: white;">
-              <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Formule</th>
-              <th style="border: 1px solid #ddd; padding: 12px; text-align: center;">Quantité</th>
-              <th style="border: 1px solid #ddd; padding: 12px; text-align: right;">Prix unitaire</th>
-              <th style="border: 1px solid #ddd; padding: 12px; text-align: right;">Sous-total</th>
+            <tr style="background-color:#002E6D; color:white;">
+              <th style="border:1px solid #ddd; padding:12px; text-align:left;">Formule</th>
+              <th style="border:1px solid #ddd; padding:12px; text-align:center;">Quantité</th>
+              <th style="border:1px solid #ddd; padding:12px; text-align:right;">Prix unitaire</th>
+              <th style="border:1px solid #ddd; padding:12px; text-align:right;">Sous-total</th>
             </tr>
           </thead>
           <tbody>
       `;
 
-      selectedFormulas.forEach((formula, index) => {
-        const subtotal = Number(formula.quantity) * formula.price;
-        const bgColor = index % 2 === 0 ? '#f9f9f9' : 'white';
+      selectedFormulas.forEach((f, idx) => {
+        const bgColor = idx % 2 === 0 ? "#f9f9f9" : "white";
         tableHTML += `
-          <tr style="background-color: ${bgColor};">
-            <td style="border: 1px solid #ddd; padding: 10px;">${formula.label}</td>
-            <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">${formula.quantity}</td>
-            <td style="border: 1px solid #ddd; padding: 10px; text-align: right;">${formula.price}€</td>
-            <td style="border: 1px solid #ddd; padding: 10px; text-align: right;">${subtotal}€</td>
+          <tr style="background-color:${bgColor};">
+            <td style="border:1px solid #ddd; padding:10px;">${f.nom}</td>
+            <td style="border:1px solid #ddd; padding:10px; text-align:center;">${f.quantity}</td>
+            <td style="border:1px solid #ddd; padding:10px; text-align:right;">${f.prix}€</td>
+            <td style="border:1px solid #ddd; padding:10px; text-align:right;">${f.quantity * f.prix}€</td>
           </tr>
         `;
       });
@@ -406,9 +445,9 @@ const ReservationForm = () => {
       tableHTML += `
           </tbody>
           <tfoot>
-            <tr style="background-color: #002E6D; color: white; font-weight: bold;">
-              <td colspan="3" style="border: 1px solid #ddd; padding: 12px; text-align: right;">TOTAL</td>
-              <td style="border: 1px solid #ddd; padding: 12px; text-align: right;">${total}€</td>
+            <tr style="background-color:#002E6D; color:white; font-weight:bold;">
+              <td colspan="3" style="border:1px solid #ddd; padding:12px; text-align:right;">TOTAL</td>
+              <td style="border:1px solid #ddd; padding:12px; text-align:right;">${total}€</td>
             </tr>
           </tfoot>
         </table>
@@ -442,7 +481,16 @@ const ReservationForm = () => {
             <input type="hidden" name="reservationState" value="EN ATTENTE DE CONFIRMATION" />
             <input type="hidden" name="reservationComment" value="Nous avons bien pris en compte votre demande et elle sera traitée dans les plus brefs délais. Veuillez noter que votre réservation ne sera confirmée qu’une fois que vous aurez reçu un mail de confirmation de notre part. Nous vous remercions pour votre patience et sommes impatients de vous accueillir !" />
             <input type="hidden" name="formulaTable" value={generateFormulaTableHTML()} />
-            <input type="hidden" name="showFormulaTable" value={formData.reservationTypeGroup && (Number(formData.formule1) + Number(formData.formule2) + Number(formData.formule3) + Number(formData.formule4) + Number(formData.formule5)) > 0 ? "OUI" : "NON"} />
+            <input
+              type="hidden"
+              name="showFormulaTable"
+              value={
+                formData.reservationTypeGroup &&
+                Object.values(formData.formuleQuantities).some(q => q > 0)
+                  ? "OUI"
+                  : "NON"
+              }
+            />
             <input type="hidden" name="reservationType" value={formData.resarvationType} />
             <div className="flex items-center justify-between flex-row pb-8">
               <h3 className="text-blueDark text-xl sm:text-3xl md:text-4xl lg:text-2xl font-medium font-specialElite leading-none">
@@ -581,103 +629,34 @@ const ReservationForm = () => {
                   <p className="text-lg font-specialElite text-blueDark pb-4">
                     {translation.formulaSelectorLabel}
                   </p>
-                  <div className="flex flex-rox justify-between items-end mr-28">
-                    <label
-                      htmlFor="formule1"
-                      className="block text-blueDark font-specialElite text-xl tracking-wide whitespace-nowrap"
-                    >
-                      {translation.formula1Label}
-                    </label>
-                    <input
-                      type="number"
-                      id="formule1"
-                      name="formule1"
-                      value={formData.formule1}
-                      onChange={handleChange}
-                      min={0}
-                      className="mt-1 block w-1/3 px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
-                      required
-                    />
-                  </div>
-                  <div className="flex flex-rox justify-between items-end mr-28">
-                    <label
-                      htmlFor="formule2"
-                      className="block text-blueDark font-specialElite text-xl tracking-wide whitespace-nowrap"
-                    >
-                      {translation.formula2Label}
-                    </label>
-                    <input
-                      type="number"
-                      id="formule2"
-                      name="formule2"
-                      value={formData.formule2}
-                      onChange={handleChange}
-                      min={0}
-                      className="mt-1 block w-1/3 px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
-                      required
-                    />
-                  </div>
-                  <div className="flex flex-rox justify-between items-end mr-28">
-                    <label
-                      htmlFor="formule3"
-                      className="block text-blueDark font-specialElite text-xl tracking-wide whitespace-nowrap"
-                    >
-                      {translation.formula3Label}
-                    </label>
-                    <input
-                      type="number"
-                      id="formule3"
-                      name="formule3"
-                      value={formData.formule3}
-                      onChange={handleChange}
-                      min={0}
-                      className="mt-1 block w-1/3 px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
-                      required
-                    />
-                  </div>
-                  <div className="flex flex-rox justify-between items-end mr-28">
-                    <label
-                      htmlFor="formule4"
-                      className="block text-blueDark font-specialElite text-xl tracking-wide whitespace-nowrap"
-                    >
-                      {translation.formula4Label}
-                    </label>
-                    <input
-                      type="number"
-                      id="formule4"
-                      name="formule4"
-                      value={formData.formule4}
-                      onChange={handleChange}
-                      min={0}
-                      className="mt-1 block w-1/3 px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
-                      required
-                    />
-                  </div>
-                  <div className="flex flex-rox justify-between items-end mr-28">
-                    <label
-                      htmlFor="formule5"
-                      className="block text-blueDark font-specialElite text-xl tracking-wide whitespace-nowrap"
-                    >
-                      {translation.formula5Label}
-                    </label>
-                    <input
-                      type="number"
-                      id="formule5"
-                      name="formule5"
-                      value={formData.formule5}
-                      onChange={handleChange}
-                      min={0}
-                      className="mt-1 block w-1/3 px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
-                      required
-                    />
+                  <div className="flex flex-col gap-3">
+                    {formules.map(f => (
+                      <div key={f.id} className="flex flex-row items-center justify-between mr-64">
+                        <label
+                          className="block text-blueDark font-specialElite text-lg tracking-wide whitespace-nowrap"
+                        >
+                          {f.nom + " - " + f.prix + "€"}
+                        </label>
+                        <input
+                          type="number"
+                          id={`formule-${f.id}`}
+                          name={f.id.toString()}
+                          value={formData.formuleQuantities[f.id] || 0}
+                          onChange={(e) => handleFormuleChange(f.id, e.target.value)}
+                          min={0}
+                          className="mt-1 block w-1/3 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
+                          required
+                        />
+                      </div>
+                    ))}
                   </div>
 
                   <input
                     type="number"
                     id="numberOfGuests"
                     name="numberOfGuests"
-                    value={Number(formData.formule1) + Number(formData.formule2) + Number(formData.formule3) + Number(formData.formule4) + Number(formData.formule5)}
-                    onChange={handleChange}
+                    value={Object.values(formData.formuleQuantities).reduce((sum, q) => sum + Number(q || 0), 0)}
+                    onChange={() => {}}
                     min={1}
                     className="hidden"
                     required
