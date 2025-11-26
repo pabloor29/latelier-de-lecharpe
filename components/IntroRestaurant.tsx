@@ -18,7 +18,7 @@ const imagesVariants: Variants = {
     },
   },
   hiddenLeft: {
-    x: 100,
+    x: 20,
     opacity: 0,
   },
   visibleLeft: {
@@ -30,7 +30,7 @@ const imagesVariants: Variants = {
     },
   },
   hiddenRight: {
-    x: -100,
+    x: -20,
     opacity: 0,
   },
   visibleRight: {

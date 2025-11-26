@@ -54,11 +54,6 @@ const ReservationForm = () => {
       groupFormulaReservation: "Réservation pour un groupe avec formule",
       numberOfGuestsLabel: "Nombre de couverts",
       formulaSelectorLabel:"Le détails des fomrules est disponible sur notre page d'accueil. Pour chaque formule, indiquez la quantité souhaitée.",
-      formula1Label: "Formule à 32€",
-      formula2Label: "Formule à 35€",
-      formula3Label: "Formule à 38€",
-      formula4Label: "Formule à 49€",
-      formula5Label: "Formule à 55€",
       eventDateLabel: "Date",
       eventTimeLabel: "Heure",
 
@@ -77,11 +72,6 @@ const ReservationForm = () => {
       groupFormulaReservation: "Group reservation with package deal",
       numberOfGuestsLabel: "Number of people",
       formulaSelectorLabel:"Details of the packages are available on our homepage. For each package, please indicate the desired quantity.",
-      formula1Label: "32€ package",
-      formula2Label: "35€ package",
-      formula3Label: "38€ package",
-      formula4Label: "49€ package",
-      formula5Label: "55€ package",
       eventDateLabel: "Date",
       eventTimeLabel: "Time",
 
@@ -100,11 +90,6 @@ const ReservationForm = () => {
       groupFormulaReservation: "Reserva para un grupo con fórmula",
       numberOfGuestsLabel: "Numero de personas",
       formulaSelectorLabel:"Los detalles de los paquetes están disponibles en nuestra página de inicio. Indique la cantidad deseada para cada paquete.",
-      formula1Label: "Fórmula a 32€",
-      formula2Label: "Fórmula a 35€",
-      formula3Label: "Fórmula a 38€",
-      formula4Label: "Fórmula a 49€",
-      formula5Label: "Fórmula a 55€",
       eventDateLabel: "Fecha",
       eventTimeLabel: "Hora",
 
@@ -123,11 +108,6 @@ const ReservationForm = () => {
       groupFormulaReservation: "Prenotazione per un gruppo con formula",
       numberOfGuestsLabel: "Numero di persone",
       formulaSelectorLabel:"I dettagli delle formule sono disponibili sulla nostra home page. Per ogni formula, indicare la quantità desiderata.",
-      formula1Label: "Formula a 32€",
-      formula2Label: "Formula a 35€",
-      formula3Label: "Formula a 38€",
-      formula4Label: "Formula a 49€",
-      formula5Label: "Formula a 55€",
       eventDateLabel: "Data",
       eventTimeLabel: "Ora",
 
@@ -409,7 +389,7 @@ const ReservationForm = () => {
       const selectedFormulas = formules
         .map((f) => ({
           ...f,
-          quantity: formData.formuleQuantities[f.nom] || 0,
+          quantity: formData.formuleQuantities[f.id] || 0,
         }))
         .filter(f => f.quantity > 0);
 
@@ -434,7 +414,7 @@ const ReservationForm = () => {
         const bgColor = idx % 2 === 0 ? "#f9f9f9" : "white";
         tableHTML += `
           <tr style="background-color:${bgColor};">
-            <td style="border:1px solid #ddd; padding:10px;">${f.nom}</td>
+            <td style="border:1px solid #ddd; padding:10px;">${f.nom + ' - ' + f.prix}</td>
             <td style="border:1px solid #ddd; padding:10px; text-align:center;">${f.quantity}</td>
             <td style="border:1px solid #ddd; padding:10px; text-align:right;">${f.prix}€</td>
             <td style="border:1px solid #ddd; padding:10px; text-align:right;">${f.quantity * f.prix}€</td>
@@ -456,6 +436,33 @@ const ReservationForm = () => {
       return tableHTML;
     };
 
+    const generateFormulesJSON = () => {
+      const selectedFormulas = formules.map(f => ({
+        id: f.id,
+        nom: f.nom,
+        prix: f.prix,
+        quantity: formData.formuleQuantities[f.id] || 0
+      }))
+      .filter(f => f.quantity > 0);
+
+      return JSON.stringify(selectedFormulas);
+    };
+
+    const totalFormulesGuests = formules.reduce(
+      (sum, f) => sum + Number(formData.formuleQuantities[f.id] || 0),
+      0
+    );
+
+    const invitesValue =
+    formData.resarvationType === "UN GROUPE"
+      ? totalFormulesGuests
+      : formData.numberOfGuests;
+
+    const formulesJSON = generateFormulesJSON();
+    const formulesEncoded = encodeURIComponent(formulesJSON);
+    const reservationUrl = `https://latelier-de-lecharpe.vercel.app/reservation-autoreply?date=${encodeURIComponent(eventDateTXT)}&heure=${encodeURIComponent(selectedValue)}&invites=${encodeURIComponent(invitesValue)}&nom=${encodeURIComponent(formData.fullName)}&commentaire=${encodeURIComponent(formData.specialRequests)}&email=${encodeURIComponent(formData.email)}&tel=${encodeURIComponent(formData.tel)}&type=${encodeURIComponent(formData.resarvationType)}&formules=${formulesEncoded}`;
+
+
     const translation = translations[selectedLanguage as keyof typeof translations];
 
   return (
@@ -475,6 +482,8 @@ const ReservationForm = () => {
             //onSubmit={handleSubmit}
             className="space-y-8 lg:w-1/3 w-5/6 z-20"
           >
+            <input type="hidden" name="reservationUrl" value={reservationUrl} />
+            <input type="hidden" name="formulesJSON" value={formulesJSON} />
             <input type="hidden" name="eventDateTXT" value={eventDateTXT} />
             <input type="hidden" name="company" value="L'Aterlier de l'Écharpe" />
             <input type="hidden" name="emailCompany" value="pab.ortg@gmail.com" />
@@ -631,7 +640,7 @@ const ReservationForm = () => {
                   </p>
                   <div className="flex flex-col gap-3">
                     {formules.map(f => (
-                      <div key={f.id} className="flex flex-row items-center justify-between mr-64">
+                      <div key={f.id} className="flex flex-row items-center justify-between ">
                         <label
                           className="block text-blueDark font-specialElite text-lg tracking-wide whitespace-nowrap"
                         >
@@ -644,7 +653,7 @@ const ReservationForm = () => {
                           value={formData.formuleQuantities[f.id] || 0}
                           onChange={(e) => handleFormuleChange(f.id, e.target.value)}
                           min={0}
-                          className="mt-1 block w-1/3 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
+                          className="mt-1 block w-1/3 py-2 px-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500 start-0"
                           required
                         />
                       </div>
