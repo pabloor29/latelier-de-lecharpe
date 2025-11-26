@@ -75,9 +75,9 @@ export default async function AdminPage() {
 
       <section className='flex flex-col gap-20 w-2/3 mb-10'>
         <MenuChange />
-        <GroupFormulas />
-        <ScheduleChange />
-        <HolidaysChange />
+        {/* <GroupFormulas /> */}
+        {/* <ScheduleChange /> */}
+        {/* <HolidaysChange /> */}
       </section>
     </div>
   );
