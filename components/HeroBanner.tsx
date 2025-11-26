@@ -35,7 +35,7 @@ const textVariantsTop: Variants = {
 
 const textVariantsRight: Variants = {
   hidden: {
-    x: 500,
+    x: 200,
     opacity: 0,
   },
   visible: {

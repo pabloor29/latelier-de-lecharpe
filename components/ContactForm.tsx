@@ -562,7 +562,7 @@ const ReservationForm = () => {
             </div>
 
             <div className="w-full flex flex-col justify-between items-center md:items-end space-y-8">
-              <div className="flex flex-col w-full">
+              <div className="flex flex-col w-full gap-2">
                 <div className="flex flex-row justify-between">
                   <div className="font-specialElite text-blueDark text-lg">
                     {translation.clasicTableReservation}
