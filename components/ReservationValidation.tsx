@@ -156,7 +156,7 @@ const ReservationDetails = () => {
     form.querySelector<HTMLInputElement>('[name="formulaTable"]')!.value = generateFormulaTableHTML();
 
     emailjs
-      .sendForm("service_pablo_001", "template_resa_002", form, "Hj5zsN3OJSMAXQ9TV")
+      .sendForm("service_latelier_001", "template_resa_002", form, "pX7XynyhN5YVSroru")
       .then(() => {
         setEmailSent(true);
         alert("E-mail envoyé !");
@@ -254,7 +254,7 @@ const ReservationDetails = () => {
       {/* FORMULAIRE EMAILJS */}
       <form ref={formRef}>
         <input type="hidden" name="company" value="L'atelier de l'écharpe" />
-        <input type="hidden" name="emailCompany" value="pab.ortg@gmail.com" />
+        <input type="hidden" name="emailCompany" value="atelier1524@orange.fr" />
         <input type="hidden" name="reservationState" />
         <input type="hidden" name="reservationComment" />
         <input type="hidden" name="eventDateTXT" value={reservationInfo.date} />

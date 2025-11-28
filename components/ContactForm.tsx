@@ -186,8 +186,8 @@ const ReservationForm = () => {
     const formElement = formRef.current;
 
     Promise.all([
-        emailjs.sendForm("service_pablo_001", "template_resa_001", formElement, "Hj5zsN3OJSMAXQ9TV"),
-        emailjs.sendForm("service_pablo_001", "template_resa_002", formElement, "Hj5zsN3OJSMAXQ9TV")
+        emailjs.sendForm("service_latelier_001", "template_resa_001", formElement, "pX7XynyhN5YVSroru"),
+        emailjs.sendForm("service_latelier_001", "template_resa_002", formElement, "pX7XynyhN5YVSroru")
     ])
     .then(() => {
         formRef.current?.reset();
@@ -486,7 +486,7 @@ const ReservationForm = () => {
             <input type="hidden" name="formulesJSON" value={formulesJSON} />
             <input type="hidden" name="eventDateTXT" value={eventDateTXT} />
             <input type="hidden" name="company" value="L'Aterlier de l'Écharpe" />
-            <input type="hidden" name="emailCompany" value="pab.ortg@gmail.com" />
+            <input type="hidden" name="emailCompany" value="atelier1524@orange.fr" />
             <input type="hidden" name="reservationState" value="EN ATTENTE DE CONFIRMATION" />
             <input type="hidden" name="reservationComment" value="Nous avons bien pris en compte votre demande et elle sera traitée dans les plus brefs délais. Veuillez noter que votre réservation ne sera confirmée qu’une fois que vous aurez reçu un mail de confirmation de notre part. Nous vous remercions pour votre patience et sommes impatients de vous accueillir !" />
             <input type="hidden" name="formulaTable" value={generateFormulaTableHTML()} />
