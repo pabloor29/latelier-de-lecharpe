@@ -65,7 +65,7 @@ function FiestaPage() {
         const { data, error } = await supabase
           .from("menu_files")
           .select("*")
-          .eq("category", "brunch")
+          .eq("category", "fiesta")
           .order("id", { ascending: true });
 
         console.log("Résultat query:", { data, error });
@@ -108,16 +108,16 @@ function FiestaPage() {
 
       {/* bg-[url('/carteETE2023-1.webp')] */}
       <div className="w-full flex flex-col justify-center items-center bg-pinkLight text-cream">
-        <div className="w-screen lg:w-3/5 flex flex-col md:flex-row justify-center items-center lg:space-x-20 space-y-10 md:pr-10 lg:pr-20">
+        <div className="w-screen lg:w-3/5 flex flex-col md:flex-row justify-center items-center md:space-x-20 space-y-10 md:pr-10 lg:pr-20">
           <motion.div
             initial="hiddenRight"
             whileInView="visibleRight"
             viewport={{ once: true, margin: "0%" }}
             variants={imagesVariants}
-            className="lg:w-1/2 w-3/4"
+            className="lg:w-1/3 md:w-1/3 w-3/4"
           >
             <img
-              src="/img/deco/11.png"
+              src="/img/deco/scenette-fiesta-001.jpg"
               alt=""
               className=""
             />
@@ -128,7 +128,7 @@ function FiestaPage() {
             whileInView="visibleLeft"
             viewport={{ once: true, margin: "0%" }}
             variants={imagesVariants}
-            className="lg:w-1/2 w-5/6 flex flex-col justify-center items-center space-y-8"
+            className="lg:w-2/3 md:w-1/3 w-3/4"
           >
             <article className="text-justify font-specialElite">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, consectetur minus laborum inventore modi officiis nemo vitae eveniet. Ipsa distinctio tenetur autem iste eos molestiae recusandae sequi ratione asperiores fugiat.
@@ -145,7 +145,7 @@ function FiestaPage() {
                 key={index}
                 src={url}
                 className="w-full object-fill"
-                title={`Menu brunch ${index + 1}`}
+                title={`Menu fiesta ${index + 1}`}
               />
             ))
           ) : (

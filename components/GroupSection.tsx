@@ -45,7 +45,7 @@ export default function GroupSection() {
   if (loading) return <p className="text-center py-10 text-mustard font-specialElite">Chargement...</p>;
 
   return (
-    <div className="w-screen bg-redWine flex flex-col justify-center items-center py-20">
+    <div className="w-screen bg-blueLight flex flex-col justify-center items-center py-20">
       <h2 className="w-11/12 text-center leading-none text-3xl text-mustard font-specialElite tracking-wide">
         Nos formules de groupe
       </h2>

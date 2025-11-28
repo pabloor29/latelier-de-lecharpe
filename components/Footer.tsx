@@ -31,9 +31,9 @@ function Footer() {
   }, []);
 
   return (
-    <footer className="w-full bg-blueLight flex flex-col justify-center items-center">
+    <footer className="w-full bg-redWine flex flex-col justify-center items-center">
       <div className="flex flex-col lg:flex-row w-5/6 lg:justify-between justify-center items-center p-4 space-y-12 lg:space-y-0">
-        <div className="lg:w-1/3 w-full text-redWine flex flex-col items-center justify-center">
+        <div className="lg:w-1/3 w-full text-cream flex flex-col items-center justify-center">
           <h4 className="font-specialElite text-4xl mb-3">HORAIRES</h4>
 
           {!hours ? (
@@ -72,7 +72,7 @@ function Footer() {
           )}
         </div>
 
-        <div className="lg:w-1/3 w-full text-redWine flex flex-col items-center justify-center">
+        <div className="lg:w-1/3 w-full text-cream flex flex-col items-center justify-center">
           <h4 className="font-specialElite text-4xl mb-3">ADRESSE</h4>
           <a
             className="flex flex-col items-center justify-center text-center hover:underline"
@@ -84,13 +84,13 @@ function Footer() {
           </a>
         </div>
 
-        <div className="lg:w-1/3 w-full text-redWine flex flex-col items-center justify-center">
+        <div className="lg:w-1/3 w-full text-cream flex flex-col items-center justify-center">
           <h4 className="font-specialElite text-4xl mb-3">CONTACT</h4>
           <ul className="flex flex-col items-center justify-center">
             <li className="flex gap-2 mb-3 hover:underline">
               <Mail />
-              <a href="mailto:atelier1524@orange.com">
-                atelier1524@orange.com
+              <a href="mailto:atelier1524@orange.fr">
+                atelier1524@orange.fr
               </a>
             </li>
             <li className="flex gap-2 mb-3 hover:underline">
@@ -106,13 +106,13 @@ function Footer() {
         </div>
 
         <div className="w-60 flex items-center justify-center">
-          <img src="/img/logo/logo-red.png" alt="Logo" />
+          <img src="/img/logo/logo-cream.png" alt="Logo" />
         </div>
       </div>
 
       <a
         href="https://portfolio-pablo-teal.vercel.app/"
-        className="text-blueLight hover:underline py-2 text-xs w-full bg-redWine flex justify-center items-center"
+        className="text-redWine hover:underline py-2 text-xs w-full bg-cream flex justify-center items-center"
       >
         © This is a PABLO ORTEGA creation - 2025
       </a>
