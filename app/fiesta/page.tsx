@@ -131,7 +131,13 @@ function FiestaPage() {
             className="lg:w-2/3 md:w-1/3 w-3/4"
           >
             <article className="text-justify font-specialElite">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, consectetur minus laborum inventore modi officiis nemo vitae eveniet. Ipsa distinctio tenetur autem iste eos molestiae recusandae sequi ratione asperiores fugiat.
+              Quand vient la nuit, L'Atelier de l'Écharpe revêt ses habits de fête — tapas, cocktails, bonne musique et ambiance décontractée au rendez-vous.
+              <br />
+              Le bar s’anime : planches à partager, tapas variés, burgers ou petites assiettes, le tout à consommer autour d’un verre, d’un cocktail, ou d’un ballon de vin. L’endroit se prête parfaitement aux soirées entre amis, aux afterworks, ou aux moments festifs improvisés.
+              <br />
+              La soirée monte d’un cran après 22h : musique, rires, ambiance cosy et détendue, ce lieu devient un véritable point de rendez-vous pour ceux qui veulent prolonger la nuit sans quitter l’esprit bistrot/bar. 🎶
+              <br />
+              👉 Réserve ta soirée, viens comme tu es, et rejoins-nous pour un moment festif, chaleureux et inoubliable.
             </article>
           </motion.div>
         </div>

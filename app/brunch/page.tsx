@@ -129,7 +129,13 @@ function BrunchPage() {
             className="lg:w-2/3 md:w-1/3 w-3/4"
           >
             <article className="text-justify font-specialElite">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, consectetur minus laborum inventore modi officiis nemo vitae eveniet. Ipsa distinctio tenetur autem iste eos molestiae recusandae sequi ratione asperiores fugiat.
+              Bienvenue à L'Atelier de l'Écharpe pour un moment gourmand et détendu !
+              <br />
+              Chaque dimanche, notre brunch vous invite à redécouvrir les plaisirs simples du petit-déjeuner et du déjeuner — dans un cadre convivial et chaleureux. Au menu : viennoiseries croustillantes, tartines rustiques, œufs façon brunch, salades fraîches, douceurs sucrées, fruits de saison, boissons chaudes ou jus de fruits frais — le tout préparé avec soin à partir de produits locaux et de qualité.
+              <br />
+              Que vous veniez seul, en couple ou entre amis, le brunch est l’occasion parfaite pour prendre le temps, discuter, rire, et commencer la journée en douceur. L’ambiance cosy et détendue de L’Atelier vous invite à vous poser, flâner, et savourer.
+              <br />
+              👉 Pensez à réserver pour être sûr d’avoir une table 🍽️
             </article>
           </motion.div>
         </div>
