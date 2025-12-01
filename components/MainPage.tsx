@@ -2,6 +2,7 @@ import React from 'react'
 import IntroRestaurant from './IntroRestaurant'
 import CarouselRestaurant from './CarouselRestaurant'
 import GroupSection from './GroupSection'
+import HappyHour from './HappyHour'
 
 function MainPage() {
   return (
@@ -9,6 +10,7 @@ function MainPage() {
       <IntroRestaurant />
       {/* <CarouselRestaurant /> */}
       <GroupSection />
+      {/* <HappyHour /> */}
     </div>
   )
 }

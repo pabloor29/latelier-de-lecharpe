@@ -53,7 +53,7 @@ const ReservationForm = () => {
       clasicTableReservation: "Réservation classique pour une table",
       groupFormulaReservation: "Réservation pour un groupe avec formule",
       numberOfGuestsLabel: "Nombre de couverts",
-      formulaSelectorLabel:"Le détails des fomrules est disponible sur notre page d'accueil. Pour chaque formule, indiquez la quantité souhaitée.",
+      formulaSelectorLabel:"Le détails des fomrules est disponible sur notre page d'accueil. Les formules sont obligatoires à partir de 14 personnes. La totalité des convives doivent sélectionner la même formule.",
       eventDateLabel: "Date",
       eventTimeLabel: "Heure",
 
@@ -71,7 +71,7 @@ const ReservationForm = () => {
       clasicTableReservation: "Standard table reservation",
       groupFormulaReservation: "Group reservation with package deal",
       numberOfGuestsLabel: "Number of people",
-      formulaSelectorLabel:"Details of the packages are available on our homepage. For each package, please indicate the desired quantity.",
+      formulaSelectorLabel:"Details of the packages are available on our homepage. Packages are mandatory for groups of 14 or more people. All guests must select the same package.",
       eventDateLabel: "Date",
       eventTimeLabel: "Time",
 
@@ -89,7 +89,7 @@ const ReservationForm = () => {
       clasicTableReservation: "Reserva clásica para una mesa",
       groupFormulaReservation: "Reserva para un grupo con fórmula",
       numberOfGuestsLabel: "Numero de personas",
-      formulaSelectorLabel:"Los detalles de los paquetes están disponibles en nuestra página de inicio. Indique la cantidad deseada para cada paquete.",
+      formulaSelectorLabel:"Los detalles de los paquetes están disponibles en nuestra página de inicio. Los menús son obligatorios a partir de 14 personas. Todos los comensales deben seleccionar el mismo menú.",
       eventDateLabel: "Fecha",
       eventTimeLabel: "Hora",
 
@@ -107,7 +107,7 @@ const ReservationForm = () => {
       clasicTableReservation: "Prenotazione classica per un tavolo",
       groupFormulaReservation: "Prenotazione per un gruppo con formula",
       numberOfGuestsLabel: "Numero di persone",
-      formulaSelectorLabel:"I dettagli delle formule sono disponibili sulla nostra home page. Per ogni formula, indicare la quantità desiderata.",
+      formulaSelectorLabel:"I dettagli delle formule sono disponibili sulla nostra home page. I menu fissi sono obbligatori a partire da 14 persone. Tutti gli ospiti devono scegliere lo stesso menu.",
       eventDateLabel: "Data",
       eventTimeLabel: "Ora",
 
@@ -160,15 +160,23 @@ const ReservationForm = () => {
   };
 
   const handleFormuleChange = (id: number, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      formuleQuantities: {
-        ...prev.formuleQuantities,
-        [id]: Number(value), // on convertit en nombre
-      },
-    }));
-  };
+    setFormData(prev => {
+      // Réinitialise toutes les quantités à 0
+      const resetQuantities: Record<number, number> = {};
 
+      for (const key of Object.keys(prev.formuleQuantities)) {
+        resetQuantities[Number(key)] = 0;
+      }
+
+      // Met uniquement la formule sélectionnée à sa nouvelle valeur
+      resetQuantities[id] = Number(value);
+
+      return {
+        ...prev,
+        formuleQuantities: resetQuantities
+      };
+    });
+  };
 
   const [eventDateTXT, setEventDateTXT] = useState("");
 

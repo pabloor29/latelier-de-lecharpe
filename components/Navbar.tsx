@@ -80,7 +80,7 @@ function Navbar() {
           href="/reservation"
           className="px-3 py-1 bg-white/5 hover:bg-redWine leading-none cursor-pointer duration-200 text-white hover:text-blueLight text-2xl tracking-wide font-specialElite"
         >
-          reservation
+          réservation
         </Link>
       </motion.div>
 
@@ -110,7 +110,7 @@ function Navbar() {
                   className="overflow-hidden h-20 w-4/5 flex items-center text-white hover:bg-[#274b7e] duration-300 px-5 py-3 cursor-pointer"
                 >
                   <h3 className="text-2xl tracking-wide font-specialElite">
-                    reservation
+                    réservation
                   </h3>
                 </a>
               </SheetDescription>
@@ -121,7 +121,7 @@ function Navbar() {
           href="/reservation"
           className="shadow cursor-pointer overflow-hidden h-10 px-3 rounded-full bg-mustard flex items-center justify-center"
         >
-          <h3 className="text-xl tracking-wide text-blueLight font-specialElite">reserver</h3>
+          <h3 className="text-xl tracking-wide text-blueLight font-specialElite">réserver</h3>
         </a>
         {/* <a href="/reservation" className="shadow cursor-pointer overflow-hidden w-10 h-10 rounded-full bg-white flex items-center justify-center">
           <Utensils />
