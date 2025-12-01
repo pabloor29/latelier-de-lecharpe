@@ -10,7 +10,7 @@ export default function Home() {
     <main className="flex flex-col items-center">
       <Navbar />
       <HeroBanner />
-      {/* <PopUpHappyHour /> */}
+      <PopUpHappyHour />
       <MainPage />
       <Footer />
       <Analytics />
