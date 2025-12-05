@@ -27,7 +27,7 @@ export default function PopUpHappyHour() {
             <X />
           </button>
 
-          <h2 className="text-xl font-specialElite text-cream mb-2">Happy hour à l'Aterlier de l'Écharpe !</h2>
+          <h2 className="text-xl font-specialElite text-cream mb-2">Happy hour à l'Atelier de l'Écharpe !</h2>
         </div>
         <div className="w-full flex flex-col justify-center items-center">
           <div className="text-center font-specialElite text-cream my-2">
