@@ -8,7 +8,7 @@ function ReservationPage() {
   return (
     <>
       <Navbar />
-      <CustomHeroBanner title="resrevation" colorText="#FBE9D5" colorBG="#A40001" />
+      <CustomHeroBanner title="reservation" colorText="#FBE9D5" colorBG="#A40001" />
       <ContactForm />
       <Footer />
     </>
