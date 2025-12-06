@@ -1,5 +1,6 @@
 // app/admin/page.tsx  (server component)
 
+import ClosedDaysManager from '@/components/admin/ClosedDaysManager';
 import GroupFormulas from '@/components/admin/GroupFormulas';
 import HolidaysChange from '@/components/admin/HolidaysChange';
 import HomePage from '@/components/admin/HomePage';
@@ -75,6 +76,7 @@ export default async function AdminPage() {
 
       <section className='flex flex-col gap-20 w-2/3 mb-10'>
         <MenuChange />
+        <ClosedDaysManager />
         {/* <GroupFormulas /> */}
         {/* <ScheduleChange /> */}
         {/* <HolidaysChange /> */}

@@ -2,7 +2,8 @@
 
 import { BadgeCheck } from "lucide-react";
 import React, { useState , useEffect , useRef } from "react";
-import { registerLocale, setDefaultLocale } from "react-datepicker";
+import DatePicker, { registerLocale, setDefaultLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { fr } from "date-fns/locale";
 import emailjs from "@emailjs/browser";
 import { createBrowserClient } from '@supabase/ssr';
@@ -64,6 +65,11 @@ const ReservationForm = () => {
 
       alertRestaurantClose: "Restaurant fermé tous les lundis et dimanches.",
       alertRestaurantFull: "Le restaurant est complet pour ce jour.", 
+
+      legendPastDay: "Jour passé",
+      legendClosedDay: "Fermé",
+      legendFullDay: "Complet",
+      datePlaceholder: "Sélectionner une date",
     },
     en: {
       title: "Reservation request",
@@ -83,6 +89,11 @@ const ReservationForm = () => {
 
       alertRestaurantClose: "Restaurant closed every Monday and Sunday.",
       alertRestaurantFull: "The restaurant is fully booked for this day.",
+
+      legendPastDay: "Past day",
+      legendClosedDay: "Closed",
+      legendFullDay: "Full",
+      datePlaceholder: "Select a date",
     },
     es: {
       title: "Solicitud de reserva",
@@ -102,6 +113,11 @@ const ReservationForm = () => {
 
       alertRestaurantClose: "Restaurante cerrado todos los lunes y domingos.",
       alertRestaurantFull: "El restaurante está completo para este día.",
+
+      legendPastDay: "Día pasado",
+      legendClosedDay: "Cerrado",
+      legendFullDay: "Completo",
+      datePlaceholder: "Seleccionar una fecha",
     },
     it: {
       title: "Richiesta di prenotazione",
@@ -121,6 +137,11 @@ const ReservationForm = () => {
 
       alertRestaurantClose: "Ristorante chiuso tutti i lunedì e domeniche.",
       alertRestaurantFull: "Il ristorante è al completo per questo giorno.",
+
+      legendPastDay: "Giorno passato",
+      legendClosedDay: "Chiuso",
+      legendFullDay: "Completo",
+      datePlaceholder: "Seleziona una data",
     },
   };
 
@@ -202,6 +223,8 @@ const ReservationForm = () => {
     Promise.all([
         emailjs.sendForm("service_latelier_001", "template_resa_001", formElement, "pX7XynyhN5YVSroru"),
         emailjs.sendForm("service_latelier_001", "template_resa_002", formElement, "pX7XynyhN5YVSroru")
+        // emailjs.sendForm("service_pablo_001", "template_resa_001", formElement, "Hj5zsN3OJSMAXQ9TV"),
+        // emailjs.sendForm("service_pablo_001", "template_resa_002", formElement, "Hj5zsN3OJSMAXQ9TV")
     ])
     .then(() => {
         formRef.current?.reset();
@@ -384,6 +407,47 @@ const ReservationForm = () => {
       return times;
     };
 
+    const handleDateSelection = (date: Date | null) => {
+      if (!date) return;
+      
+      const dateStr = formatDateString(date);
+      
+      if (closedDays.includes(dateStr)) {
+        alert(translation.alertRestaurantFull);
+        setSelectedDate(null);
+        setAvailableTimes([]);
+        setSelectedValue("");
+        return;
+      }
+      
+      if (isDateClosed(date)) {
+        alert(translation.alertRestaurantClose);
+        setSelectedDate(null);
+        setAvailableTimes([]);
+        setSelectedValue("");
+        return;
+      }
+
+      const today = new Date();
+      if (
+        date.toDateString() === today.toDateString() && 
+        today.getHours() >= 16
+      ) {
+        alert("Les réservations pour le jour même sont fermées à partir de 16h.");
+        setSelectedDate(null);
+        setAvailableTimes([]);
+        setSelectedValue("");
+        return;
+      }
+
+      const twoDigits = (num: number) => num.toString().padStart(2, "0");
+      setEventDateTXT(`${twoDigits(date.getDate())}-${twoDigits(date.getMonth() + 1)}-${date.getFullYear()}`);
+
+      setSelectedDate(date);
+      setAvailableTimes(getAvailableTimes(date));
+      setSelectedValue("");
+    };
+
     const handleDateChange = (e: any) => {
       const [year, month, day] = e.target.value.split('-').map(Number);
       const date = new Date(year, month - 1, day);
@@ -514,6 +578,40 @@ const ReservationForm = () => {
 
   return (
     <>
+      <style jsx global>{`
+        .date-past {
+          background-color: #f3f4f6 !important;
+          color: #9ca3af !important;
+          cursor: not-allowed !important;
+        }
+
+        .date-closed {
+          background-color: #fee2e2 !important;
+          color: #991b1b !important;
+          position: relative;
+        }
+
+        .date-closed::after {
+          content: '';
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: 80%;
+          height: 2px;
+          background-color: #991b1b;
+          transform: translate(-50%, -50%) rotate(-45deg);
+        }
+
+        .date-full {
+          background-color: #fca5a5 !important;
+          color: #7f1d1d !important;
+          font-weight: bold !important;
+        }
+
+        .react-datepicker__day--disabled {
+          cursor: not-allowed !important;
+        }
+      `}</style>
       {succeeded ? (
         <div className="flex flex-col lg:flex-row w-full h-96 justify-center px-4 items-center lg:space-x-3 text-[#002E6D]">
           <BadgeCheck />
@@ -534,6 +632,7 @@ const ReservationForm = () => {
             <input type="hidden" name="eventDateTXT" value={eventDateTXT} />
             <input type="hidden" name="company" value="L'Aterlier de l'Écharpe" />
             <input type="hidden" name="emailCompany" value="atelier1524@orange.fr" />
+            {/* <input type="hidden" name="emailCompany" value="pab.ortg@gmail.com" /> */}
             <input type="hidden" name="reservationState" value="EN ATTENTE DE CONFIRMATION" />
             <input type="hidden" name="reservationComment" value="Nous avons bien pris en compte votre demande et elle sera traitée dans les plus brefs délais. Veuillez noter que votre réservation ne sera confirmée qu’une fois que vous aurez reçu un mail de confirmation de notre part. Nous vous remercions pour votre patience et sommes impatients de vous accueillir !" />
             <input type="hidden" name="formulaTable" value={generateFormulaTableHTML()} />
@@ -721,38 +820,49 @@ const ReservationForm = () => {
               )}
 
               <div className="w-full">
-                <div className="w-full flex flex-row items-end justify-between">
-                  <label
-                    htmlFor="eventDate"
-                    className="block text-blueDark font-specialElite text-xl tracking-wide"
-                  >
-                    {translation.eventDateLabel}
-                  </label>
-                  <input
-                    type="date"
-                    id="datePicker"
-                    name="eventDate"
-                    value={selectedDate ? selectedDate.toISOString().split("T")[0] : Date()}
-                    onChange={handleDateChange}
-                    // onChange={(e) => {
-                    //   const date = new Date(e.target.value);
-                    //   if (isDateClosed(date)) {
-                    //     alert("Le restaurant est fermé ce jour.");
-                    //     setSelectedDate(null);
-                    //     setAvailableTimes([]);
-                    //     setSelectedValue("");
-                    //     return;
-                    //   }
-                    //   setSelectedDate(date);
-                    //   setAvailableTimes(getAvailableTimes(date));
-                    //   setSelectedValue("");
-                    //   // Format pour EmailJS
-                    //   const twoDigits = (num: number) => num.toString().padStart(2, "0");
-                    //   setEventDateTXT(`${twoDigits(date.getDate())}-${twoDigits(date.getMonth() + 1)}-${date.getFullYear()}`);
-                    // }}
-                    className="mt-1 block w-2/3 px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
-                    required
-                  />
+                <label
+                  className="block text-blueDark font-specialElite text-xl tracking-wide mb-2"
+                >
+                  {translation.eventDateLabel}
+                </label>
+                <DatePicker
+                  selected={selectedDate}
+                  onChange={handleDateSelection}
+                  dayClassName={(date) => {
+                    const dateStr = formatDateString(date);
+                    const isPast = date < new Date(new Date().setHours(0, 0, 0, 0));
+                    const isClosed = isDateClosed(date);
+                    const isFull = closedDays.includes(dateStr);
+                    
+                    if (isPast) return "date-past";
+                    if (isFull) return "date-full";
+                    if (isClosed) return "date-closed";
+                    return "";
+                  }}
+                  dateFormat="dd/MM/yyyy"
+                  locale="fr"
+                  minDate={new Date()}
+                  placeholderText={translation.datePlaceholder}
+                  className="w-full px-4 py-2 border border-[#597ba8] rounded-md focus:ring focus:ring-violet-200 focus:border-violet-500"
+                  required
+                />
+                
+                {/* Légende */}
+                <div className="mt-3 flex flex-wrap gap-4 text-sm">
+                  {/* <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-gray-100 border border-gray-300 rounded"></div>
+                    <span className="text-blueDark">{translation.legendPastDay}</span>
+                  </div> */}
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-red-100 border border-red-300 rounded relative">
+                      <div className="absolute left-1/2 top-1/2 w-3/4 h-0.5 bg-red-900 transform -translate-x-1/2 -translate-y-1/2 rotate-45"></div>
+                    </div>
+                    <span className="text-blueDark">{translation.legendClosedDay}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-red-300 border border-red-500 rounded"></div>
+                    <span className="text-blueDark">{translation.legendFullDay}</span>
+                  </div>
                 </div>
               </div>
 
@@ -834,11 +944,6 @@ const ReservationForm = () => {
             </div>
           </div>
 
-          <img
-            src="/top-octopus.webp"
-            alt=""
-            className="absolute opacity-5 z-0 scale-150 top-20 lg:top-44 left-0 overflow-x-hidden"
-          />
         </div>
       )}
     </>

@@ -157,6 +157,7 @@ const ReservationDetails = () => {
 
     emailjs
       .sendForm("service_latelier_001", "template_resa_002", form, "pX7XynyhN5YVSroru")
+      // .sendForm("service_pablo_001", "template_resa_002", form, "Hj5zsN3OJSMAXQ9TV")
       .then(() => {
         setEmailSent(true);
         alert("E-mail envoyé !");
@@ -255,6 +256,7 @@ const ReservationDetails = () => {
       <form ref={formRef}>
         <input type="hidden" name="company" value="L'atelier de l'écharpe" />
         <input type="hidden" name="emailCompany" value="atelier1524@orange.fr" />
+        {/* <input type="hidden" name="emailCompany" value="pab.ortg@gmail.com" /> */}
         <input type="hidden" name="reservationState" />
         <input type="hidden" name="reservationComment" />
         <input type="hidden" name="eventDateTXT" value={reservationInfo.date} />
