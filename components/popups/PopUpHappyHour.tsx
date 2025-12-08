@@ -36,19 +36,19 @@ export default function PopUpHappyHour() {
           </div>
           <div className="font-specialElite text-cream mt-4 w-full sm:w-2/3">
             <div className="flex justify-between">
-              <p>🍺 Pinte de blonde MUNICH </p>
+              <p>Pinte de blonde MUNICH </p>
               <p>4€</p>
             </div>
             <div className="flex justify-between">
-              <p>🍺 Pinte des autres bières</p>
+              <p>Pinte des autres bières</p>
               <p>5€</p>
             </div>
             <div className="flex justify-between">
-              <p>🥃 Ricard</p>
+              <p>Ricard</p>
               <p>2€</p>
             </div>
             <div className="flex justify-between">
-              <p>🍹 Spritz ou Mojito</p>
+              <p>Spritz ou Mojito</p>
               <p>5€</p>
             </div>
           </div>
