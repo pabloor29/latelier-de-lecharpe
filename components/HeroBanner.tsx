@@ -64,7 +64,7 @@ function HeroBanner() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={textVariantsLeft}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-black tracking-wider font-eina"
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-blueLight tracking-wider font-eina"
         >
           L'ATELIER
         </motion.h1>
@@ -73,7 +73,7 @@ function HeroBanner() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={textVariantsTop}
-          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-black tracking-wide"
+          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-blueLight tracking-wide"
         >
           <div className="absolute -rotate-90 translate-x-[138px] -translate-y-[42px] sm:translate-x-[172px] sm:-translate-y-[52px] md:translate-x-[206px] md:-translate-y-[63px] lg:translate-x-[275px] lg:-translate-y-[84px] font-eina">
             DE
@@ -84,7 +84,7 @@ function HeroBanner() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={textVariantsRight}
-          className="text-black text-xl sm:text-2xl md:text-3xl lg:text-4xl text-end font-eina"
+          className="text-blueLight text-xl sm:text-2xl md:text-3xl lg:text-4xl text-end font-eina"
         >
           L'ÉCHARPE
         </motion.h3>
