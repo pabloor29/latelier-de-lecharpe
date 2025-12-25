@@ -62,10 +62,10 @@ export default async function AdminPage() {
 
   // OK : admin authentifié
   return (
-    <div className='bg-cream flex flex-col items-center'>
+    <div className='bg-cream flex flex-col items-center w-screen'>
       <RubanAdmin />
       
-      <div className="w-2/3 flex flex-row justify-between items-center">
+      <div className="w-4/5 md:w-2/3 mb-20 flex flex-col md:flex-row md:justify-between md:items-center">
         <div className="">
           <HomePage email={profile.email} />
         </div>
@@ -74,7 +74,7 @@ export default async function AdminPage() {
         </div>
       </div>
 
-      <section className='flex flex-col gap-20 w-2/3 mb-10'>
+      <section className='flex flex-col gap-20 w-4/5 md:w-2/3 mb-10'>
         <MenuChange />
         <ClosedDaysManager />
         {/* <GroupFormulas /> */}

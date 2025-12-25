@@ -132,7 +132,7 @@ function ClosedDaysManager() {
           onClick={() => changeMonth(-1)}
           className="bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300"
         >
-          ← Mois précédent
+          ←
         </button>
         
         <h2 className="text-lg font-semibold">
@@ -143,7 +143,7 @@ function ClosedDaysManager() {
           onClick={() => changeMonth(1)}
           className="bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300"
         >
-          Mois suivant →
+          →
         </button>
       </div>
 
