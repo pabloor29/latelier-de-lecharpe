@@ -21,10 +21,10 @@ const links = [
     label: "dîner",
     href: "/diner",
   },
-  {
-    label: "brunch",
-    href: "/brunch",
-  },
+  // {
+  //   label: "brunch",
+  //   href: "/brunch",
+  // },
   {
     label: "fiesta",
     href: "/fiesta",
