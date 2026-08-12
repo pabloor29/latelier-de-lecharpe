@@ -68,6 +68,7 @@ function Navbar() {
           <li className="flex justify-center space-x-12">
             {links.map((link) => (
               <a
+                key={link.href}
                 href={link.href}
                 className="border-b-[1px] font-specialElite border-transparent leading-none hover:border-b-[1px] hover:border-white text-2xl tracking-wide"
               >
