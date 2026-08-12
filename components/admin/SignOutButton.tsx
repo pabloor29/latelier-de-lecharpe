@@ -8,7 +8,8 @@ export default function SignOutButton() {
 
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { db: { schema: 'latelier_de_lecharpe' } }
   )
 
   async function handleSignOut() {
