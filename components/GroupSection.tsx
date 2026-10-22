@@ -52,7 +52,7 @@ export default function GroupSection() {
       </h2>
 
       <p className="font-specialElite text-center mt-8 w-3/5 text-mustard">
-        Les formules sont obligatoires à partir de 14 personnes. La totalité des convives doivent sélectionner la même formule.
+        Les formules sont obligatoires à partir de 12 personnes. La totalité des convives doivent sélectionner la même formule.
       </p>
 
       <div className="lg:w-3/5 w-4/5 flex flex-col justify-between items-center py-12 space-y-4">
